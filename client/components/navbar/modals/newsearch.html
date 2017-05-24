@@ -1,0 +1,172 @@
+
+
+<div class="modal-header">
+  <h3 class="modal-title" id="modal-title">New Search</h3>
+</div>
+<div class="modal-body" id="modal-body">
+  
+      <div class="row">
+        <div class="col-md-12">
+          <div class="alert alert-success center" role="alert" ng-show="dataSaved">
+            <strong>Well done!</strong> We are processing your request, this could take a while.
+          </div>
+          <div class="filter" ng-show="!dataSaved">
+					<form name="travelform">
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group" id="scrollable-dropdown-menu">
+									<label>Destination</label>
+									<input name="places" type="text" ng-model="travelform.destination" placeholder="Search a Destination" uib-typeahead="place as place.place for place in places | filter:{place:$viewValue} | limitTo:50"
+										class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-focus-first="true" typeahead-no-results="noresult"
+										typeahead-select-on-blur="true" autocomplete="off">
+								</div>
+								
+							</div>
+							<!-- /.col-* -->
+
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Start date</label>
+									<input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="start" is-open="focus" ng-focus="focus=true"
+										ng-change="focus1=true" datepicker-options="dateOptionsStart" show-button-bar="false" ng-required="true" alt-input-formats="altInputFormats"
+									/>
+								</div>
+								
+							</div>
+							
+
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>End Date</label>
+									<input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="end" is-open="focus1" ng-focus="focus1=true"
+										datepicker-options="dateOptionsEnd" show-button-bar="false" ng-required="true" alt-input-formats="altInputFormats"
+									/>
+								</div>
+								
+							</div>
+							
+							
+						</div>
+						 
+						<b style="color: red;">{{ error }}</b>
+						<!-- /.row -->
+            <script>
+	// Checkbox
+	$('input[type=checkbox]').wrap('<div class="checkbox-wrapper"></div>'); 
+	$('input[type=checkbox]').each(function() {
+		if (this.checked) {
+			$(this).closest('.checkbox-wrapper').addClass('checked');
+		}
+	});
+
+	$('input[type=checkbox]').change(function() {
+		if (this.checked) {
+			$(this).closest('.checkbox-wrapper').addClass('checked');
+		} else {
+			$(this).closest('.checkbox-wrapper').removeClass('checked');
+		}
+	});
+
+	// Radio
+	$('input[type=radio]').wrap('<div class="radio-wrapper"></div>'); 
+	$('input[type=radio]').each(function() {
+		if ($(this).is(':checked')) {
+			$(this).closest('.radio-wrapper').addClass('checked');
+		}
+	});
+
+	$('input[type=radio]').change(function() {		
+		$('input[type=radio]').each(function() {
+			if ($(this).is(':checked')) {
+				$(this).closest('.radio-wrapper').addClass('checked');
+			} else {
+				$(this).closest('.radio-wrapper').removeClass('checked');
+			}
+		});
+	});		
+</script>
+						<div class="row filter-options">
+							<!--<div class="row">-->
+								
+								<!--<div class="filter-sort">-->
+									<div class="col-md-2">
+										<label>Experiences</label>
+									</div>
+									<div class="col-md-10">
+										
+											<div class="checkbox-inline">
+												<label><input type="checkbox" name="traveltype" ng-model="travelform.city"> City Highlights</label>
+											</div>
+											<div class="checkbox-inline">
+												<label><input type="checkbox" name="traveltype" ng-model="travelform.cultural"> Cultural</label>
+											</div>
+										
+											<div class="checkbox-inline">
+												<label><input type="checkbox" name="traveltype" ng-model="travelform.luxury"> Luxury</label>
+											</div>
+											<div class="checkbox-inline">
+												<label><input type="checkbox" name="traveltype" ng-model="travelform.beach"> Beach</label>
+											</div>
+										
+										
+										<div class="checkbox-inline">
+											<label><input type="checkbox" name="traveltype" ng-model="travelform.nature"> Nature</label>
+										</div>
+										<div class="checkbox-inline">
+											<label><input type="checkbox" name="traveltype" ng-model="travelform.adventure"> Adventure</label>
+										</div>
+									
+										<div class="checkbox-inline">
+											<label><input type="checkbox" name="traveltype" ng-model="travelform.nightlife"> Nightlife</label>
+										</div>
+									
+									</div>
+									<!-- /.filter-sort -->
+								<!--</div>-->
+							</div>
+							<!-- /.row -->
+							<!--<hr>-->
+							<div class="row filter-options">
+								
+									<div class="col-md-2">
+										<label>Who is traveling?</label>
+									</div>
+									<div class="col-md-10">
+										<div class="checkbox-inline">
+											<label><input type="radio" ng-model="travelform.travelers" name="travelers" value="Solo Traveler"> Solo traveler</label>
+										</div>
+									
+										<div class="checkbox-inline">
+											<label><input type="radio" ng-model="travelform.travelers" name="travelers" value="Family"> Family</label>
+										</div>
+									
+										<div class="checkbox-inline">
+											<label><input type="radio" ng-model="travelform.travelers" name="travelers" value="Couple"> Couple</label>
+										</div>
+									
+										<div class="checkbox-inline">
+											<label><input type="radio" ng-model="travelform.travelers" name="travelers" value="Group"> Group</label>
+										</div>
+										
+									</div>
+								
+								
+							</div>
+							
+							<!--<div class="row">
+								<div class="col-sm-12">
+									<div class="filter-sort">
+										<strong>(Let us suggest you a prefilled itinerary to start)</strong>
+									</div>
+								</div>
+							</div>-->
+							
+							</form>
+						</div>
+        </div>
+      </div>
+
+</div>
+<div class="modal-footer center">
+  <input type="button" ng-show="!dataSaved" class="btn btn-primary btn-large" ng-click="submit('itinerary')" value="Create Itinerary">
+</div>

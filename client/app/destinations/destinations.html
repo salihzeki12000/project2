@@ -1,0 +1,242 @@
+<style>
+  #gmaps {
+    width: 100%;
+    height: 700px;
+  }
+  
+  .hero-form-sub li {
+    color: #616161;
+    text-transform: uppercase;
+  }
+  
+  .filter-options strong {
+    font-size: 14px;
+  }
+  
+  #iw-container .iw-title {
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 10px;
+    /*background-color: #df2f2f;
+    color: white;*/
+    /*margin: 1px;
+    border-radius: 2px 2px 0 0;*/
+    /* In accordance with the rounding of the default infowindow corners. */
+  }
+  
+  .gm-style-iw {
+    width: 300px !important;
+    top: 0 !important;
+    left: 0 !important;
+    /*background-color: #fff;*/
+    /*box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
+    border: 1px solid rgba(223, 47,4 7, 0.6);
+    border-radius: 2px 2px 0 0;*/
+  }
+  
+  .footer-listingmap {
+    font-size: 10px;
+  }
+</style>
+
+<toaster-container></toaster-container>
+
+<div class="container-fluid fullwidth-wrapper">
+  <!--<div class="row">-->
+  <div class="col-md-5">
+    <div class="row">
+      <div class="col-md-12 admin-box">
+    <div class="content-title">
+      <ul class="breadcrumb" ng-if="!type.includes('city')">
+        <li><a href="/">Home</a> <i class="md-icon">keyboard_arrow_right</i></li>
+        <li ng-if="placeparams.length == 1" class="active">{{placeparams[0].replaceAll('-',' ')}}</li>
+        
+        <li ng-if="placeparams.length == 2"><a href="/destinations/{{placeparams[0].replaceAll(' ','-')}}">{{placeparams[0]}}</a> <i class="md-icon">keyboard_arrow_right</i></li>
+        <li ng-if="placeparams.length == 2" class="active">{{placeparams[1].replaceAll('-',' ')}}</li>
+        
+      </ul>
+      <ul class="breadcrumb" ng-if="type.includes('city')">
+        <li><a href="/">Home</a> <i class="md-icon">keyboard_arrow_right</i></li>
+        <li><a href="/destinations/{{placeparams[0].replaceAll(' ','-')}}">{{placeparams[0].replaceAll('-',' ')}}</a> <i class="md-icon">keyboard_arrow_right</i></li>
+        <li class="active"  >{{placeparams[1].replaceAll('-',' ')}}</li>
+      </ul>
+      
+      <h5 ng-if="type.includes('city')"><b>Itineraries in {{placeparams[1].replaceAll('-',' ')}}</b></h5>
+      <h5 ng-if="!type.includes('city') && placeparams.length == 1"><b>Destinations in {{placeparams[0].replaceAll('-',' ')}}</b></h5>
+      <h5 ng-if="!type.includes('city') && placeparams.length == 2"><b>Destinations in {{placeparams[1].replaceAll('-',' ')}}</b></h5>
+
+    </div>
+    
+  <div ng-if="itineraries">
+    <div class="row">
+      <div class="col-md-12">
+        <form>
+          <div class="form-group">
+            <input type="text" ng-model="search.$"  class="form-control" placeholder="Search">
+          </div>
+        </form>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table small-header">
+          <!--<thead>
+            <tr>
+              <th>Title</th>
+            </tr>
+          </thead>-->
+          
+          <tbody>
+            
+              <tr ng-repeat="activity in activityResult | filter:search:strict">
+                <td><a href="/itinerary-map/{{activity.name}}/{{activity._id}}"><b class="text-muted">Itinerary</b> <span class="label label-sightseeing">{{activity.itilength}}</span> <span class="label label-thingsdo">{{activity.form.travelers}}</span> <span class="label label-none">{{activity.form.traveltype}}</span></a></td>
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+    <div ng-if="!itineraries">
+      <div class="row">
+      <div class="col-md-12">
+        <form>
+          <div class="form-group">
+            <input type="text" ng-model="searchdest.place"  class="form-control" placeholder="Search">
+          </div>
+        </form>
+
+      </div>
+      </div>
+      <div class="row">
+      <div class="col-sm-6" dir-paginate="activity in activityResult | filter:searchdest:strict | itemsPerPage:6 ">
+
+        <div class="card" ng-if="activity.n_activities && !type.includes('city')">
+          <div class="card-image" ng-if="!activity.photo_reference==''" style="background-image: url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=380&photoreference={{activity.photo_reference}}&key=AIzaSyA-iCNYt6ham4ygfAp6AAAEUDgJcEgFpvM');">
+            <a href="/destinations/{{activity.partOf2.replaceAll(' ','-')}}_{{activity.place.replaceAll(' ','-')}}"></a>
+            <div class="card-image-count">
+              <span># Activities: </span>
+              <strong>{{activity.n_activities}} </strong>
+
+
+            </div>
+            <!-- /.card-image-count -->
+          </div>
+          <!-- /.card-image -->
+
+          <div class="card-image" ng-if="activity.photo_reference==''" style="background-image: url('assets/img/tmp/card-2.jpg');">
+            <a href="/destinations/{{activity.partOf2.replaceAll(' ','-')}}_{{activity.place.replaceAll(' ','-')}}"></a>
+
+            <div class="card-image-count">
+              <span># Activities: </span>
+              <strong>{{activity.n_activities}} </strong>
+
+
+            </div>
+            <!-- /.card-image-count -->
+          </div>
+          <!-- /.card-image -->
+
+
+          <div class="card-content">
+            <h3>{{activity.partOf2}}</h3>
+            <h2><a href="/destinations/{{activity.partOf2.replaceAll(' ','-')}}_{{activity.place.replaceAll(' ','-')}}">{{activity.place}}</a></h2>
+          </div>
+          <!-- /.card-content -->
+
+          <!--<div class="card-actions">
+            <a href="" ng-if="isLoggedIn" class="card-action-icon active" ng-click="saveActivity(activity)"><i class="md-icon">favorite</i></a>
+            <a href="" ng-if="!isLoggedIn" class="card-action-icon active" ng-click="alertLogin()"><i class="md-icon">favorite</i></a>
+            <a href="" ng-click="goDetailCity(activity)" class="card-action-btn btn btn-transparent">Show More</a>
+          </div>-->
+          <!-- /.card-actions -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col-* -->
+
+
+    </div>
+    <!-- /.row -->
+    
+
+    <div class="row center" ng-if="!searchdest.place">
+      <div class="col-sm-12">
+
+        <dir-pagination-controls max-size="7" direction-links="true" boundary-links="true">
+        </dir-pagination-controls>
+
+      </div>
+    </div>
+    </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.col-* -->
+
+  <div class="col-md-7">
+    <!--<div class="filter filter-gray checkbox-light">
+
+      <div class="row">
+        <form>
+          <div class="form-group">
+            <div class="input-group col-sm-12 col-md-12">
+              <div class="input-group-addon" style="border: 1px solid rgba(255, 255, 255, 0.15); background-color: #f3f3f3;">
+                <i class="md-icon">search</i>
+              </div>
+              <input name="places" value="{{placeSelected1}}" type="text" ng-model="placeSelected" placeholder="Search a Destination" 
+                uib-typeahead="place as place.place for place in places | filter:{place:$viewValue} | limitTo:7"
+                class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-focus-first="true" typeahead-no-results="noresult"
+                typeahead-select-on-blur="true" autocomplete="off" typeahead-on-select ="getPlaceSelected($model)">
+              <div class="input-group-btn">
+                <button class="btn btn-primary btn-block" ng-click="$event.preventDefault(); getPlaceSelected(placeSelected)">Search</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+
+    </div>-->
+    <div class="row">
+      <div class="col-md-12">
+        <div id="gmaps"></div>
+      </div>
+    </div>
+
+    <!-- /.filter -->
+    <div class="row" ng-if="type.includes('city')">
+      <div class="col-md-12">
+        <div class="widget">
+          <h2 class="widgettitle"><i class="fa fa-thumbs-up" aria-hidden="true"></i> Next recommended destinations!</h2>
+
+          <ul class="contact">
+            <li ng-repeat="rou in routes"><a href="/destinations/{{rou.partOf.replaceAll(' ','-')}}_{{rou.toplace.replaceAll(' ','-')}}">{{rou.toplace}}</a> </li>
+
+          </ul>
+        </div>
+        <!-- /.widget -->
+      </div>
+    </div>
+
+
+  </div>
+  <!-- /.col-* -->
+  <!--</div> /.row -->
+</div>
+<!-- /.container -->
+
+<div class="footer-listingmap">
+  <div class="row center">
+    <p ng-if="placeSelected1">
+      Based on the page <a target="_blank" href="https://en.wikivoyage.org/wiki/{{placeSelected1}}">{{placeSelected1}}</a>.
+      See this page's
+      <a target="_blank" href="https://en.wikivoyage.org/w/index.php?title={{placeSelected1}}&action=history">contributions</a>.
+      Text is available under the <a target="_blank" href="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike License</a>.
+    </p>
+  </div>
+</div>

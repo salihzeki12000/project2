@@ -1,0 +1,404 @@
+<style>
+#container {
+  width: 100%;
+  height: 700px;
+  position: relative;
+}
+
+#gmaps,#floating-numday{
+  width: 150px;
+  height: 50px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#gmaps,#floating-panel{
+  width: 150px;
+  height: 50px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#floating-panel{
+ top: 10px;
+  width: 250px;
+  left: 250px;
+  z-index: 10;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+  font-family: 'Roboto','sans-serif';
+  line-height: 30px;
+}
+#floating-numday {
+  top: 10px;
+  width: 250px;
+  left: 10px;
+  z-index: 10;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+  font-family: 'Roboto','sans-serif';
+  line-height: 30px;
+}
+
+#gmaps {
+    width: 100%;
+    height: 100%;
+  }
+
+
+
+select {
+    width: 100px;
+}
+  .btn {
+    margin: 5px;
+  }
+  
+  .footer-listingmap {
+    font-size: 10px;
+  }
+  
+  .widgettitle {
+    margin: 0 0 0 0;
+  }
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
+
+<toaster-container></toaster-container>
+
+<tour step="currentStep" post-step="postStepCallback()" >
+   <virtual-step
+      tourtip="Drag activities from your wish list and drop them into your itinerary"
+      tourtip-next-label="Next tip"
+      tourtip-placement="right"
+      tourtip-step="0"
+      tourtip-element="#e0"></virtual-step>
+    <virtual-step
+      tourtip="Add activities from our database or external sources to your itinerary"
+      tourtip-placement="right"
+      tourtip-step="1"
+      tourtip-element="#e1"></virtual-step>
+    <virtual-step>
+</tour>
+
+
+<div class="admin-wrapper">
+  <!--<div class="admin-sidebar">
+
+    <a class="btn btn-primary btn-block hidden-md-down" ui-sref="itinerarylist">Itineraries</a>
+
+    <div class="dashboard-nav-primary collapse navbar-toggleable-md">
+      <ul class="nav nav-pills nav-stacked">
+
+        <li class="nav-item">
+          <a href="" class="nav-link" ui-sref="itinerary"><i class="md-icon">view_list</i> Current Itinerary</a>
+        </li>
+
+      </ul>
+    </div>
+
+    <hr class="hidden-md-down">
+
+  </div>
+   /.admin-sidebar -->
+
+  <div class="admin-main">
+
+    <div class="admin-content">
+      <div class="container-fluid">
+        <!--<div class="content-title">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12 col-md-12">
+                
+                  <h1>Your Itinerary in <b>{{itinerary.name}}</b></h1><br><br>
+                  <div class="post-read-more pull-left">
+                    <a href="" ng-click="goBack()"><i class="fa fa-chevron-left"></i>  Back</a>
+                  </div>
+<<<<<<< HEAD
+                <!--<span ng-click="isloggin($event)"><toggle ng-model="itinerary.active" class="pull-right" on="Public" off="Private" onstyle="btn-primary" offstyle="btn-secondary" ng-disabled="disabled"></toggle></span>-->
+                <!--<input type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled">-->
+                
+
+                <!--<ul class="col-md-4 breadcrumb">
+                  <li><a ui-sref="main">Home</a> <i class="md-icon">keyboard_arrow_right</i></li>
+                  <li><a href="" ng-click="goBack()">Activities</a> <i class="md-icon">keyboard_arrow_right</i></li>
+                  <li class="active">Itinerary</li>
+                </ul>-->
+
+              </div>
+            </div>
+          </div>
+          
+        </div>-->
+
+
+
+        <div class="row">
+        <div class="col-md-3">
+          
+          <div class="row">
+            <div class="col-md-12 center">
+              <dir-pagination-controls max-size="5" class="center" direction-links="true" boundary-links="true">
+                  </dir-pagination-controls>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <button ng-click="toggle()" class="btn btn-secondary pull-right"> <i class="fa fa-plus" aria-hidden="true"></i> Add</button>
+              
+
+              <button class="btn btn-primary btn-link btn-sm btn-facebook pull-right" ng-click="itiActive()" socialshare socialshare-provider="facebook"
+                socialshare-title="Itinerary in {{itinerary.name}}" socialshare-text="" socialshare-url="{{urlshare}}" socialshare-type="share"
+                socialshare-via="571748713017786" socialshare-display="popup" socialshare-from="Blogotravel" socialshare-redirect-uri="{{urlshare}}">
+              <i class="fa fa-facebook"> </i> Share
+              </button>
+              
+            </div>
+          </div>
+
+          <!-- /.center -->
+          <!--<div class="col-lg-10 col-lg-offset-1">-->
+          <!--<slick infinite=true slides-to-show=3 slides-to-scroll=3 settings="slickConfig">-->
+
+            <div ui-tree data-drag-delay="200" id="calendar" >
+              <uib-accordion close-others="true">
+                <div uib-accordion-group class="panel-default" dir-paginate="day in itinerary.days | itemsPerPage:5" is-open="day.status">
+                  <uib-accordion-heading>
+                  <b ng-click="viewMarkersDay(day.day);gotoTop()" >Day {{day.day + 1}}</b> <i class="pull-right glyphicon" ng-click="viewMarkersDay(day.day);gotoTop()" ng-class="{'glyphicon-chevron-down': day.status, 'glyphicon-chevron-right': !day.status}"></i>
+                </uib-accordion-heading>
+           
+            <div ui-tree-nodes="" ng-model="day.activities" class="cards-small-wrapper">
+              <p class="small"><i class="fa fa-hand-o-up"></i> Drag activities to sort them out</p>
+              <div ui-tree-handle class="card-small" ng-repeat="activity in day.activities" ui-tree-node>
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="card-small-image">
+                      <a href="" ng-if="!activity.photo_reference==''" ng-click="goDetailActivity(activity)" style="background-image: url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=380&photoreference={{activity.photo_reference}}&key=AIzaSyA-iCNYt6ham4ygfAp6AAAEUDgJcEgFpvM');"></a>
+
+                      <a href="" ng-if="activity.photo_reference==''" style="background-image: url('assets/img/tmp/card-2.jpg');"></a>
+                    </div>
+                    <!-- /.card-small-image -->
+                  </div>
+                  <div class="col-md-9">
+                    <div class="card-small-content" ng-show="!activity.ext">
+                      <h4 ng-if="activity.acttype == 'Food & Drink'"> <span class="label label-food">{{activity.acttype}}</span></h4>
+                      <h4 ng-if="activity.acttype == 'Accommodation'"> <span class="label label-accommodation">{{activity.acttype}}</span></h4>
+                      <h4 ng-if="activity.acttype == 'Sightseeing'"> <span class="label label-sightseeing">{{activity.acttype}}</span></h4>
+                      <h4 ng-if="activity.acttype == 'Shopping'"> <span class="label label-shopping">{{activity.acttype}}</span></h4>
+                      <h4 ng-if="activity.acttype == 'Things to do'"> <span class="label label-thingsdo">{{activity.acttype}}</span></h4>                      
+                      <h3><a href="" ng-click="goDetailActivity(activity)">{{activity.name}}</a></h3>
+                      <h4 ng-if="activity.rank > 0"><span>Rating: </span><strong>{{activity.rank}} </strong><img src="assets/img/google13x13.png" alt=""> </h4>
+                      
+                      <a href="" ng-click="deleteActDays(activity)" class="card-action-icon pull-right"><i class="md-icon">delete</i><span></span></a>
+                    </div>
+                    <!-- /.card-small-content -->
+                    <div class="card-small-content" ng-show="activity.ext">
+                      <!--<h4>{{activity.acttype}}</h4>-->
+                      <h3><a href="{{activity.lat}}" target="_blank">{{activity.name}}</a></h3>
+                      
+                      <a href="" ng-click="deleteActDays(activity)" class="card-action-icon pull-right"><i class="md-icon">delete</i><span></span></a>
+                      <!--<h4 ng-if="activity.rank > 0"><span>Rating: </span><strong>{{activity.rank}} </strong></h4>-->
+                    </div>
+                  </div>
+                  <!-- /.card-small -->
+
+                </div>
+                <!-- /.cards-small-wrapper -->
+                <!--<pre>{{day.activities | json}}</pre>-->
+              </div>
+            </div>
+                </div>
+              </uib-accordion>
+            </div>
+           
+            <div class="row">
+              
+                <form>
+                  <div class="col-md-8">
+                    <div class="form-group">
+                      <div class="input-group col-sm-12 col-md-12">
+                      <input type="number" ng-model="numdays" min="0" max="100" class="form-control" placeholder="Modify N° days">
+                    
+                    <!--<i class="fa fa-question-circle pull-left" tooltip-placement="bottom" uib-tooltip="Set a number of days for your itinerary"
+                      aria-hidden="true"></i>-->
+                      <div class="input-group-btn">
+                      <button ng-click="saveDays()" class="btn btn-primary btn-sm">Apply</button>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <div class="col-md-4">
+                 <button ng-click="clearDaysActivities()" class="btn btn-secondary btn-sm pull-right"><i class="md-icon">delete</i> Clear</button>
+                </div>
+          
+              <!--<button ng-click="clearActActivities()" class="btn btn-secondary btn-sm pull-right"><i class="md-icon">delete</i> Clear All</button>-->
+
+          </div>
+          </div>
+
+
+          <div class="col-md-9">
+            
+            <div class="row">
+              <div class="col-md-12">
+                <br>
+                <h4 id="title">Your Itinerary in <b>{{itinerary.name}}</b> ({{numdays2}} days) <span ng-click="isloggin($event)"><toggle ng-model="itinerary.active" class="pull-right" on="Public" off="Private" onstyle="btn-primary" offstyle="btn-secondary" ng-disabled="disabled"></toggle></span> <button ng-click="seeCalendar()" class="btn btn-primary btn-sm pull-right">Calendar View</button></h4>
+                
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-12">
+                <div id="container">
+                  <div id="gmaps"></div>
+                  <div id="floating-numday" ng-if="numday3 >=0">
+                    <h2><u><b>Day: {{numday3 + 1}}</b></u> <small>({{totalDist | number:2}} km | {{totalDur}})</small></h2>
+                  </div>
+                  <div id="floating-panel">
+                    <b>Mode of Travel: </b>
+                    <select ng-model="mode">
+                      <option value="DRIVING"> Driving</option>
+                      <option value="WALKING"> Walking</option>
+                      <option value="BICYCLING"> Bicycling</option>
+                      <option value="TRANSIT"> Transit</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  <pageslide ps-open="checked" ps-click-outside="false" ps-container='gmaps'>
+      <h4>Recommendations</h4>
+      <div class="row">
+              <div class="col-md-12">
+      <button ng-click="openMyModal()" ng-show="actitis.length > 0" class="btn btn-primary"> <i class="fa fa-plus" aria-hidden="true"></i> New Activities</button>
+      <p class="small"><i class="fa fa-hand-o-up"></i> Drag activities to a day in your itinerary</p>
+              </div>
+      </div>
+          <div ui-tree data-drag-delay="200" id="e0">
+           
+              <div ng-repeat="activity in itinerary.activities">
+                
+                  <b>{{activity.acttype}}</b> 
+                <div ui-tree-nodes="" ng-model="activity.activities" class="cards-small-wrapper">
+
+                  <div ui-tree-handle class="card-small" ng-repeat="act in activity.activities" ui-tree-node>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <div class="card-small-image">
+                          <a href="" ng-if="!act.photo_reference==''" ng-click="goDetailActivity(act)" style="background-image: url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=380&photoreference={{act.photo_reference}}&key=AIzaSyA-iCNYt6ham4ygfAp6AAAEUDgJcEgFpvM');"></a>
+
+                          <a href="" ng-if="act.photo_reference==''" ng-click="goDetailActivity(act)" style="background-image: url('assets/img/tmp/card-2.jpg');"></a>
+                        </div>
+                        <!-- /.card-small-image -->
+                      </div>
+                      <div class="col-md-9">
+                        <div class="card-small-content" ng-show="!act.ext">
+                          <h4 ng-if="act.acttype == 'Food & Drink'"> <span class="label label-food">{{act.acttype}}</span></h4>
+                          <h4 ng-if="act.acttype == 'Accommodation'"> <span class="label label-accommodation">{{act.acttype}}</span></h4>
+                          <h4 ng-if="act.acttype == 'Sightseeing'"> <span class="label label-sightseeing">{{act.acttype}}</span></h4>
+                          <h4 ng-if="act.acttype == 'Shopping'"> <span class="label label-shopping">{{act.acttype}}</span></h4>
+                          <h4 ng-if="act.acttype == 'Things to do'"> <span class="label label-thingsdo">{{act.acttype}}</span></h4>
+                          <h3><a href="" ng-click="goDetailActivity(act)">{{act.name}}</a></h3>
+                          <h4 ng-if="act.rank > 0"><span>Rating: </span><strong>{{act.rank}} </strong><img src="assets/img/google13x13.png" alt=""></h4>
+                          <a href="" ng-click="deleteActActivities(act)" class="card-action-icon pull-right"><i class="md-icon">delete</i><span></span></a>
+                        </div>
+                        <div class="card-small-content" ng-show="act.ext">
+                            <!--<h4>{{act.acttype}}</h4>-->
+                            <h3><a href="{{act.lat}}" target="_blank">{{act.name}}</a></h3>
+                            
+                            <a href="" ng-click="deleteActActivities(act)" class="card-action-icon pull-right"><i class="md-icon">delete</i><span></span></a>
+                            <!--<h4 ng-if="activity.rank > 0"><span>Rating: </span><strong>{{activity.rank}} </strong></h4>-->
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+         
+                   <!--<div ng-if="activity.activities.length == 0">
+                    Sorry, we are working to have more activities
+                  </div>-->
+                </div>
+                </div>
+            
+            </div>
+    </pageslide>
+          <div class="footer-listingmap">
+            <div class="row center">
+              <p ng-if="itinerary.name">
+                Based on the page <a target="_blank" href="https://en.wikivoyage.org/wiki/{{itinerary.name}}">{{itinerary.name}}</a>.
+                See this page's
+                <a target="_blank" href="https://en.wikivoyage.org/w/index.php?title={{itinerary.name}}&action=history">contributions</a>.
+                Text is available under the <a target="_blank" href="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike License</a>.
+              </p>
+            </div>
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- /.admin-content -->
+      </div>
+      <!-- /.admin-main -->
+    </div>
+    <!-- /.admin-wrapper -->

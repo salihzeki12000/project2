@@ -1,0 +1,221 @@
+<style>
+	
+	#username {
+		margin-top: 12px !important;
+	}
+
+	#avatar {
+		margin-top: 16px !important;
+	}	
+	
+	.nav-item>a.btn-secondary:hover {
+		color: #000 !important;
+	}
+
+	.nav-item {
+		margin-left: 10px !important;
+		margin-top: 2px !important;
+	}
+
+	.header-bottom {
+		padding: 1px 0;
+	}
+
+	.uib-datepicker-popup .btn {
+		padding: 0px 7px 1px 7px !important;
+		margin: 0px 0px 0px 0px !important;
+		height: 33px !important;
+	}
+
+
+	.admin-header-search .form-control {
+		border: 0;
+		box-shadow: none;
+		font-size: 14px;
+		height: 40px;
+		padding: 0 10px;
+		width: 100%;
+	}
+
+
+	.admin-header-search {
+		margin-top: 10px;
+	}
+
+  @media (max-width: 991px) {
+    h6 {
+      display: none; } 
+     
+  }
+
+	.header-more-menu {
+		z-index: 1000;
+	}
+
+	.label {
+		font-size:100%;
+
+	}
+
+</style>
+
+<div class="header">
+	<div class="header-inner" ng-if="state.current.name == 'main' || state.current.name == 'destinations' || state.current.name == 'itineraries' || state.current.name == 'login'">
+
+		<div class="header-top">
+			<div class="container">
+				<a ui-sref="main">
+					<img src="assets/img/logo/plannertrip_logo.svg" width="200" height="55" alt="" class="pull-left">
+				</a>
+				<div class="nav-primary-wrapper collapse navbar-toggleable-sm">
+
+					<ul class="nav nav-pills">
+						<li class="nav-item"><a ui-sref="main" class="nav-link">Home</a></li>
+						<li ng-if="isLoggedIn()" class="nav-item"><a href="/itineraries" class="nav-link">Itineraries</a></li>
+						<li class="nav-item" ng-if="state.current.name != 'main'"><button href="" ng-click="openMyModal()" class="btn btn-success btn-sm btn-block"><i class="md-icon">search</i> Search new destination</button></li>
+						<li ng-if="isAdmin()" class="nav-item"><a href="/itinerarylist/" class="nav-link">Itinerary List</a></li>
+
+					</ul>
+				</div>
+
+				<ul class="nav nav-pills secondary">
+					<li class="nav-item">
+						<h6 id="username">{{getCurrentUser().name}}</h6>
+					</li>
+					<li id="avatar" class="nav-item user-avatar-wrapper" ng-if="isLoggedIn()">
+						<a  ng-if="!avatar" href="#" class="nav-link circle user-avatar-image" style="background-image: url('assets/img/tmp/profile-1.jpg')"></a>
+						<a  ng-if="avatar" href="#" class="nav-link circle user-avatar-image" style="background-image: url({{avatar}})"></a>
+
+						<span class="user-avatar-status"></span>
+
+						<ul class="header-more-menu">
+							<li ng-if="isLoggedIn()"><a href="/itineraries">Itineraries</a></li>
+							<li><a href="" ui-sref="logout">Logout</a></li>
+						</ul>
+					</li>
+					<li class="nav-item" ng-if="!isLoggedIn()">
+						<button href="" ng-click="openLoginModal()" class="btn btn-primary btn-block"><i class="md-icon">person</i> Sign in</button>
+					</li>
+				</ul>
+
+			</div>
+
+		</div>
+		<div class="header-bottom" ng-if="state.current.name == 'destinations'">
+			<div class="container">
+				
+				<div class="header-bottom-label hidden-md-down">
+					Destinations <b><i class="fa fa-arrow-right" aria-hidden="true"></i></b>
+				</div>
+
+				<ul class="nav nav-pills">
+					<li class="nav-item"><a href="/destinations/Asia" class="nav-link">Asia</a></li>
+					<li class="nav-item"><a href="/destinations/Europe" class="nav-link">Europe</a></li>
+					<li class="nav-item"><a href="/destinations/North-America" class="nav-link">North America</a></li>
+					<li class="nav-item"><a href="/destinations/South-America" class="nav-link">South America</a></li>
+					<li class="nav-item"><a href="/destinations/Africa" class="nav-link">Africa</a></li>
+					<li class="nav-item"><a href="/destinations/Oceania" class="nav-link">Oceania</a></li>
+				</ul>
+				
+			</div>
+		</div>
+	</div>
+	<div class="header-inner" ng-if="state.current.name == 'itinerary-map' || state.current.name == 'public-itinerary'">
+		<div class="header-top">
+			<div class="container-fluid">
+			<a ui-sref="main">
+				<img src="assets/img/logo/plannertrip_logo.svg" width="200" height="55" alt="" class="pull-left">
+			</a>
+			<div class="nav-primary-wrapper collapse navbar-toggleable-sm">
+
+
+				<ul class="nav nav-pills">
+					<!--<li class="nav-item"><a ui-sref="main" class="nav-link">Home</a></li>-->
+					<li ng-if="isLoggedIn()" class="nav-item"><a href="/itineraries" class="nav-link">Itineraries</a></li>
+					
+					<li ng-if="isAdmin()" class="nav-item"><a href="/itinerarylist/" class="nav-link">Itinerary List</a></li>
+					<li class="nav-item" ><button href="" ng-click="openMyModal()" class="btn btn-success btn-sm btn-block"><i class="md-icon">search</i> Search new destination</button></li>
+				</ul>
+			</div>
+
+			<ul class="nav nav-pills secondary">
+
+				<!--<li>
+					<div class="admin-header-search">
+						<div class="input-group">
+							<div class="input-group-addon">
+								<i class="md-icon">search</i>
+							</div>
+
+							<input type="text" class="form-control" placeholder="Search a new destination" ng-model="travelform.destination" uib-typeahead="place as place.place for place in places | filter:{place:$viewValue} | limitTo:7"
+							 typeahead-show-hint="true" typeahead-min-length="1" typeahead-focus-first="true" typeahead-no-results="noresult" typeahead-select-on-blur="true"
+							 autocomplete="off">
+						</div>
+					</div>
+				</li>-->
+				<li class="nav-item ">
+						<button href="" ng-click="openShareModal()" class="btn btn-secondary btn-block"><i class="md-icon">share</i> Share</button>
+				</li>
+
+				<li class="nav-item">
+					<h6 id="username">{{getCurrentUser().name}}</h6>
+				</li>
+
+				<li id="avatar" class="nav-item user-avatar-wrapper" ng-if="isLoggedIn()">
+					<a  ng-if="!avatar" href="#" class="nav-link circle user-avatar-image" style="background-image: url('assets/img/tmp/profile-1.jpg')"></a>
+					<a  href="#" class="nav-link circle user-avatar-image" style="background-image: url({{avatar}})"></a>
+
+					<span class="user-avatar-status"></span>
+
+					<ul class="header-more-menu">
+						<li><a href="/itinerary-map//">Itineraries</a></li>
+						<li><a href="" ui-sref="logout">Logout</a></li>
+					</ul>
+				</li>
+
+				<li class="nav-item" ng-if="!isLoggedIn()">
+				<button href="" ng-click="openLoginModal()" class="btn btn-primary btn-block" ng-if="state.current.name == 'itinerary-map'"><i class="md-icon">save</i> Save itinerary</button>
+				<button href="" ng-click="openLoginPublicModal()" class="btn btn-primary btn-block" ng-if="state.current.name == 'public-itinerary'"><i class="md-icon">save</i> Save itinerary</button>
+				</li>
+
+			</ul>
+
+			</div>
+
+		</div>
+		<div class="header-bottom" ng-if="state.current.name == 'itinerary-map'">
+			<div class="container-fluid">
+
+				<div class="header-bottom-label hidden-md-down">
+					Recommended for you <b><i class="fa fa-arrow-right" aria-hidden="true"></i></b>
+				</div>
+
+				<ul class="nav nav-pills">
+					<li ng-click="filterCategory('all')"><a href=""><span class="label label-all">All</span></a></li>
+					<li ng-click="filterCategory('Food & Drink')" ><a href=""><span class="label label-food">Food & Drink</span></a></li>
+					<li ng-click="filterCategory('Accommodation')"><a href=""><span class="label label-accommodation">Accommodation</span></a></li>
+					<li ng-click="filterCategory('Sightseeing')"><a href=""><span class="label label-sightseeing">Sightseeing</span></a></li>
+					<li ng-click="filterCategory('Things to do')"><a href=""><span class="label label-thingsdo">Things to do</span></a></li>
+					<li ng-click="filterCategory('Shopping')"><a href=""><span class="label label-shopping">Shopping</span></a></li>
+					<li ng-click="filterCategory('none')"><a href=""><span class="label label-none">None</span></a></li>
+					<li><i class="fa fa-question-circle-o help fa-2x" style="margin-top: 6px;" tooltip-placement="bottom" 
+						uib-tooltip-template="'myTooltipTemplate.html'"></i></li>
+					
+				</ul>
+				<a href="" ng-click="openWish()" class="btn btn-secondary pull-right">Wish List <span class="label label-actcount" style="font-size: 12px; margin-left: 20px;">{{totalAct}}</span></a>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<script type="text/ng-template" id="myTooltipTemplate.html">
+	<div style="font-size:12px;text-align: left;">
+		<span>After click in a recommended activity category, you can perform:</span>
+		<ul style="margin-left:-20px;">
+		<li><b><u>Double click</u></b> to add recommended activities to your <b>itinerary</b></li>
+		<li><b><u>Right click</u></b> to add them to your <b>wish list!</b></li>
+		</ul>
+	</div>
+
+</script>

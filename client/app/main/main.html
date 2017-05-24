@@ -1,0 +1,504 @@
+<style>
+	@media (max-width: 767px) {
+		.hero {
+			height: 900px;
+		}
+	}
+	
+	.push-top-bottom {
+		padding-top: 0px
+	}
+	
+	.filter {
+		width: 80%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+	.hero-content p {
+		width: 80%;
+		margin-left: auto;
+		margin-right: auto;
+		font-weight: 500;
+	}
+	
+	.uib-datepicker-popup .btn {
+		padding: 0px 7px 1px 7px !important;
+		margin: 0px 0px 0px 0px !important;
+		height: 33px !important;
+	}
+	
+	.hero-content .btn {
+		padding: 0px 20px;
+		margin-left: 0px;
+		margin-right: 0px;
+		margin-top: 10px;
+	}
+	
+	hr {
+		margin: 10px 0px;
+	}
+
+	.radio-inline, .checkbox-inline {
+    	padding-left: 0px;   
+	}
+	.radio-inline + .radio-inline, .checkbox-inline + .checkbox-inline {
+    	margin-left: 0px;  
+	}
+</style>
+<script>
+	// Checkbox
+	$('input[type=checkbox]').wrap('<div class="checkbox-wrapper"></div>'); 
+	$('input[type=checkbox]').each(function() {
+		if (this.checked) {
+			$(this).closest('.checkbox-wrapper').addClass('checked');
+		}
+	});
+
+	$('input[type=checkbox]').change(function() {
+		if (this.checked) {
+			$(this).closest('.checkbox-wrapper').addClass('checked');
+		} else {
+			$(this).closest('.checkbox-wrapper').removeClass('checked');
+		}
+	});
+
+	// Radio
+	$('input[type=radio]').wrap('<div class="radio-wrapper"></div>'); 
+	$('input[type=radio]').each(function() {
+		if ($(this).is(':checked')) {
+			$(this).closest('.radio-wrapper').addClass('checked');
+		}
+	});
+
+	$('input[type=radio]').change(function() {		
+		$('input[type=radio]').each(function() {
+			if ($(this).is(':checked')) {
+				$(this).closest('.radio-wrapper').addClass('checked');
+			} else {
+				$(this).closest('.radio-wrapper').removeClass('checked');
+			}
+		});
+	});		
+</script>
+
+<toaster-container></toaster-container>
+
+<div class="hero">
+	<div class="hero" style="background-image: url('{{photo}}'); ">
+		<div class="hero-content">
+			<div class="container ">
+				<div class="center">
+					<h1>Create awesome <span style="color:#dede03">itineraries</span> instantly!</h1>
+				</div>
+				<br>
+				<div class="alert alert-success center" role="alert" ng-show="dataSaved">
+					<strong>Well done!</strong> We are processing your request, this could take a while.
+				</div>
+
+				<div class="filter" ng-show="!dataSaved">
+					<form name="travelform">
+						<div class="row">
+							<div class="col-md-3">
+								<div class="form-group" id="scrollable-dropdown-menu">
+									<label>Destination</label>
+									<input name="places" type="text" ng-model="travelform.destination" placeholder="Search a Destination" uib-typeahead="place as place.place for place in places | filter:{place:$viewValue} | limitTo:50"
+										class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-focus-first="true" typeahead-no-results="noresult"
+										typeahead-select-on-blur="true" autocomplete="off">
+								</div>
+								
+							</div>
+							<!-- /.col-* -->
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Start date</label>
+									<input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="start" is-open="focus" ng-focus="focus=true"
+										ng-change="focus1=true" datepicker-options="dateOptionsStart" show-button-bar="false" ng-required="true" alt-input-formats="altInputFormats"
+									/>
+								</div>
+								
+							</div>
+							
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>End Date</label>
+									<input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="end" is-open="focus1" ng-focus="focus1=true"
+										datepicker-options="dateOptionsEnd" show-button-bar="false" ng-required="true" alt-input-formats="altInputFormats"
+									/>
+								</div>
+								
+							</div>
+							<div class="col-md-3">
+								<input ng-show="!dataSaved" type="button" class="btn btn-primary btn-block" ng-click="submit('itinerary')" value="Create Itinerary">
+							</div>
+							
+						</div>
+						 
+						<b style="color: red;">{{ error }}</b>
+						<!-- /.row -->
+						<div class="row filter-options">
+							<!--<div class="row">-->
+								
+								<!--<div class="filter-sort">-->
+									<div class="col-md-2">
+										<label>Experiences</label>
+									</div>
+									<div class="col-md-10">
+										
+											<div class="checkbox-inline">
+												<label><input type="checkbox" name="traveltype" ng-model="travelform.city"> City Highlights</label>
+											</div>
+											<div class="checkbox-inline">
+												<label><input type="checkbox" name="traveltype" ng-model="travelform.cultural"> Cultural</label>
+											</div>
+										
+											<div class="checkbox-inline">
+												<label><input type="checkbox" name="traveltype" ng-model="travelform.luxury"> Luxury</label>
+											</div>
+											<div class="checkbox-inline">
+												<label><input type="checkbox" name="traveltype" ng-model="travelform.beach"> Beach</label>
+											</div>
+										
+										
+										<div class="checkbox-inline">
+											<label><input type="checkbox" name="traveltype" ng-model="travelform.nature"> Nature</label>
+										</div>
+										<div class="checkbox-inline">
+											<label><input type="checkbox" name="traveltype" ng-model="travelform.adventure"> Adventure</label>
+										</div>
+									
+										<div class="checkbox-inline">
+											<label><input type="checkbox" name="traveltype" ng-model="travelform.nightlife"> Nightlife</label>
+										</div>
+									
+									</div>
+									<!-- /.filter-sort -->
+								<!--</div>-->
+							</div>
+							<!-- /.row -->
+							<!--<hr>-->
+							<div class="row filter-options">
+								
+									<div class="col-md-2">
+										<label>Who is traveling?</label>
+									</div>
+									<div class="col-md-10">
+										<div class="checkbox-inline">
+											<label><input type="radio" ng-model="travelform.travelers" name="travelers" value="Solo Traveler"> Solo traveler</label>
+										</div>
+									
+										<div class="checkbox-inline">
+											<label><input type="radio" ng-model="travelform.travelers" name="travelers" value="Family"> Family</label>
+										</div>
+									
+										<div class="checkbox-inline">
+											<label><input type="radio" ng-model="travelform.travelers" name="travelers" value="Couple"> Couple</label>
+										</div>
+									
+										<div class="checkbox-inline">
+											<label><input type="radio" ng-model="travelform.travelers" name="travelers" value="Group"> Group</label>
+										</div>
+										
+									</div>
+								
+								
+							</div>
+							
+							<!--<div class="row">
+								<div class="col-sm-12">
+									<div class="filter-sort">
+										<strong>(Let us suggest you a prefilled itinerary to start)</strong>
+									</div>
+								</div>
+							</div>-->
+							
+							</form>
+						</div>
+						<!-- /.row -->
+					
+				</div>
+				<!-- /.filter -->
+
+					
+
+					<!--<input ng-show="!dataSaved" type="button" class="btn btn-primary btn-large" ng-click="submit('destination')" value="Discover Destination">-->
+
+			</div>
+			<!-- /.container -->
+		</div>
+		<!-- /.hero-content -->
+		<div class="hero-layer">
+		</div>
+	</div>
+
+</div>
+
+<div class="push-bottom">
+	<div class="container">
+		<div class="page-title background-white">
+			<h2>Recommended itineraries </h2>
+			<p>Discover the best itineraries around the world</p>
+		</div>
+		<!-- /.page-title -->
+
+		<div class="row">
+
+			<div class="col-sm-12 col-md-4">
+				<div class="card">
+					<div class="card-image" style="background-image: url('assets/img/recommended/santiago-743_640.jpg');">
+						<a href="/public-itinerary/Santiago-de-Chile&58afab3efcdb390005fbeb5a"></a>
+					</div>
+					<!-- /.card-image -->
+
+					<div class="card-content">
+						<h2><a href="/public-itinerary/Santiago-de-Chile&58afab3efcdb390005fbeb5a">3 days itinerary in Santiago, Chile</a></h2>
+					</div>
+					<!-- /.card-content -->
+
+					<div class="card-actions">
+						<!--<a href="#" class="card-action-icon"><i class="md-icon">insert_comment</i><span> 12</span></a>-->
+						<a href="#" class="card-action-icon"><i class="md-icon">access_time</i><span> 18. February</span></a>
+
+						<a href="/public-itinerary/Santiago-de-Chile&58afab3efcdb390005fbeb5a" class="card-action-btn btn btn-transparent">Read More</a>
+					</div>
+					<!-- /.card-actions -->
+				</div>
+				<!-- /.card -->
+			</div>
+			<!-- /.col-* -->
+
+			<div class="col-sm-12 col-md-4">
+				<div class="card">
+					<div class="card-image" style="background-image: url('assets/img/recommended/usa-1777986_640.jpg');">
+						<a href="/public-itinerary/New-York-City&58afaf5efcdb390005fbec2b"></a>
+					</div>
+					<!-- /.card-image -->
+
+					<div class="card-content">
+						<h2><a href="/public-itinerary/New-York-City&58afaf5efcdb390005fbec2b">4 days itinerary in New York City, USA</a></h2>
+					</div>
+					<!-- /.card-content -->
+
+					<div class="card-actions">
+						<!--<a href="#" class="card-action-icon"><i class="md-icon">insert_comment</i><span> 12</span></a>-->
+						<a href="#" class="card-action-icon"><i class="md-icon">access_time</i><span> 19. February</span></a>
+
+						<a href="/public-itinerary/New-York-City&58afaf5efcdb390005fbec2b" class="card-action-btn btn btn-transparent">Read More</a>
+					</div>
+					<!-- /.card-actions -->
+				</div>
+				<!-- /.card -->
+			</div>
+			<!-- /.col-* -->
+
+			<div class="col-sm-12 col-md-4">
+				<div class="card">
+					<div class="card-image" style="background-image: url('assets/img/recommended/australia-1281935_640.jpg');">
+						<a href="/public-itinerary/Sydney&58afbc86fcdb390005fbed22"></a>
+					</div>
+					<!-- /.card-image -->
+
+					<div class="card-content">
+						<h2><a href="/public-itinerary/Sydney&58afbc86fcdb390005fbed22">3 days itinerary in Sydney, Australia</a></h2>
+					</div>
+					<!-- /.card-content -->
+
+					<div class="card-actions">
+						<!--<a href="#" class="card-action-icon"><i class="md-icon">insert_comment</i><span> 12</span></a>-->
+						<a href="#" class="card-action-icon"><i class="md-icon">access_time</i><span> 20. February</span></a>
+
+						<a href="/public-itinerary/Sydney&58afbc86fcdb390005fbed22" class="card-action-btn btn btn-transparent">Read More</a>
+					</div>
+					<!-- /.card-actions -->
+				</div>
+				<!-- /.card -->
+			</div>
+			<!-- /.col-* -->
+
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.container -->
+</div>
+<!-- /.push-bottom -->
+
+<div class="container">
+	<div class="page-title">
+		<h2>Latest shared itineraries</h2>
+
+		<p>
+			Check itineraries created by our users
+		</p>
+	</div>
+	<!-- /.page-title -->
+
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="cards-wrapper">
+				<div class="row">
+					<slick init-onload=true data="itineraries" dots=false infinite=true autoplay=true speed=300 slides-to-show=4 touch-move=true slides-to-scroll=1 responsive="responsive">
+
+
+						<div class="col-sm-6 col-md-3" ng-repeat="itinerary in itineraries">
+							<div class="card">
+
+								<div class="card-image" ng-if="!itinerary.photo==''" style="background-image: url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=380&photoreference={{itinerary.photo}}&key=AIzaSyA-iCNYt6ham4ygfAp6AAAEUDgJcEgFpvM');">
+									<a href="/public-itinerary/{{itinerary.name}}&{{itinerary._id}}"></a>
+									<div class="card-image-count">
+										<strong>{{itinerary.itilength}}</strong>
+										<span>days</span>
+									</div>
+								</div>
+
+								<div class="card-image" ng-if="itinerary.photo==''" style="background-image: url('assets/img/tmp/card-2.jpg');">
+									<a href="/public-itinerary/{{itinerary.name}}&{{itinerary._id}}"></a>
+									<div class="card-image-count">
+										<strong>{{itinerary.itilength}}</strong>
+										<span>days</span>
+									</div>
+								</div>
+
+								<div class="card-content">
+									<h2><a href="/public-itinerary/{{itinerary.name}}&{{itinerary._id}}">{{itinerary.name}} itinerary</a></h2>
+								</div>
+
+								<div class="card-actions">
+									<a href="#" class="card-action-icon"><i class="md-icon">access_time</i><span> {{itinerary.created | date:'MMM d, y'}}</span></a>
+									<a href="/public-itinerary/{{itinerary.name}}&{{itinerary._id}}" class="card-action-btn btn btn-transparent">Show More</a>
+								</div>
+
+							</div>
+							<!--<pre>{{itinerary | json}}</pre>-->
+						</div>
+					</slick>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="page-title">
+		<h2>Destinations</h2>
+
+		<p>
+			Check itineraries around the world
+		</p>
+	</div>
+	<!-- /.page-title -->
+
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="cards-wrapper">
+				<div class="row">
+					<div class="destinationsslick">
+
+						<div class="col-sm-6 col-md-3">
+							<div class="card">
+
+								<div class="card-image" 
+								style="background-image: url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=380&photoreference=CoQBdwAAAGglNOxp-wcJHG4ajYWEe-E38kRxWgeKuKtLqNUApNFXilcxbQknWyRrFRNR4UlNlhihynfCLw1ohjCPNCyd0f7ztdSfUAUwq6ec0rDKXPKE6QMQDREEGlcgkyfgTsPB8BY-tz3eUYfJuK9GB7bKXdPaE9idNtAMJDnQ7eeaw9uuEhCSVG8vItvwh5K0cFNUxTePGhRxhyQgVWMu5IDKRUYbKUvPU5g5IA&key=AIzaSyA-iCNYt6ham4ygfAp6AAAEUDgJcEgFpvM');">
+									<a href="/destinations/Asia"></a>
+								</div>
+
+								<div class="card-content">
+									<h2><a href="/destinations/Asia">Asia</a></h2>
+								</div>
+
+
+							</div>
+							<!--<pre>{{itinerary | json}}</pre>-->
+						</div>
+
+						<div class="col-sm-6 col-md-3">
+							<div class="card">
+
+								<div class="card-image" 
+								style="background-image: url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=380&photoreference=CoQBdwAAAOZhrZuyCluUCJyChgN8yv1em5-nnHcKAIbrG7lxJCCvogipHVpwpZtO9-C7gumW71Wt9xglNwHyBy3nhpl5Mk3yViqs7cyJokKswSU2U27rQRHUQ8IQNEg7yINhaHuNikheFzBwYYz9wWvNl5woycgaMG59o11a5lVaZlGmL3PjEhDVeGtqpm-8Tga9zuTmwZsWGhRuBeaEx8DihbLVuNtH3J0ykdPH4Q&key=AIzaSyA-iCNYt6ham4ygfAp6AAAEUDgJcEgFpvM');">
+									<a href="/destinations/Europe"></a>
+								</div>
+
+								<div class="card-content">
+									<h2><a href="/destinations/Europe">Europe</a></h2>
+								</div>
+
+
+							</div>
+							<!--<pre>{{itinerary | json}}</pre>-->
+						</div>
+
+						<div class="col-sm-6 col-md-3">
+							<div class="card">
+
+								<div class="card-image" 
+								style="background-image: url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=380&photoreference=CoQBdwAAAD4YOjZJUmlu1Lbilx6kTf_DaUspUxF59SF03ILSbgbVpkIgv0QEf4BaJwPziS_DAS_q2ts8x6QbdANdTQHULauh2bLTC8tZqKpYvKmy0QHRrTrhP5yMgRDyIkCDDNRqbjhtKp7RUfs8264_xMSMfrGtqeP3tEeXs3Q502ShnmtlEhAll00KsJGAh_uRHBUP-QxzGhTnGfdU_c3E32i3JuIerHoUu8NB1Q&key=AIzaSyA-iCNYt6ham4ygfAp6AAAEUDgJcEgFpvM');">
+									<a href="/destinations/North-America"></a>
+								</div>
+
+								<div class="card-content">
+									<h2><a href="/destinations/North-America">North America</a></h2>
+								</div>
+
+
+							</div>
+							<!--<pre>{{itinerary | json}}</pre>-->
+						</div>
+
+						<div class="col-sm-6 col-md-3">
+							<div class="card">
+
+								<div class="card-image" 
+								style="background-image: url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=380&photoreference=CoQBdwAAAEeFuRoO8y_qrxOai-6R865shd8cRkcX6dsmu0J1Cfp0zDd3kySgVh8gXifRMsu-XTKZ0PuSAWrdRBx5jh9V3oSpSmoznEqvCdTdwaDopQ00thtlgda44I_zeiPYosP19qegeyMIkWKFZnBRtoiTwlZyneeKZjCf0VScMQpP5LxgEhDAj0wMdLoQ26b9KfUJuWthGhRhkSQdkx6x-ceDvIYWMyA5z9gCEQ&key=AIzaSyA-iCNYt6ham4ygfAp6AAAEUDgJcEgFpvM');">
+									<a href="/destinations/South-America"></a>
+								</div>
+
+								<div class="card-content">
+									<h2><a href="/destinations/South-America">South America</a></h2>
+								</div>
+
+
+							</div>
+							<!--<pre>{{itinerary | json}}</pre>-->
+						</div>
+
+						<div class="col-sm-6 col-md-3">
+							<div class="card">
+
+								<div class="card-image" 
+								style="background-image: url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=380&photoreference=CoQBdwAAALVaWw4tftCd7jVPnPzdv0FQYqpuJbvF9M8uW4Tg_d84ctnS-IhycIySjXnA2pZgyBwQQna2ybwZV7Of58nlLXwDsHgCyw14xzhIiCKanc4u8w4tnPZjaVpHyyv9LFeFKxsBNd5L2YrLbGKPfkNkVH7r5HvXZOrrNoC18S0MXFgjEhCcXmlMNY8ILBXwYDdcdhHJGhS2Ao9USB6gjDEYtkTmH79d9RuRGg&key=AIzaSyA-iCNYt6ham4ygfAp6AAAEUDgJcEgFpvM');">
+									<a href="/destinations/Africa"></a>
+								</div>
+
+								<div class="card-content">
+									<h2><a href="/destinations/Africa">Africa</a></h2>
+								</div>
+
+
+							</div>
+							<!--<pre>{{itinerary | json}}</pre>-->
+						</div>
+
+						<div class="col-sm-6 col-md-3">
+							<div class="card">
+
+								<div class="card-image" 
+								style="background-image: url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=380&photoreference=CoQBdwAAAM32hVBqNLpjXL4CJBHBO4sAXQCdMJZy_27e9FB4xxT4tBfacE42PPjnl9wzVEQH3Si_vJ6sD8p8vehElSReYo1TfxdFxlgU-9MLB66JrMil9ntmHnO8gKhidcOb9InYeEnUluXvTKUJyfh6fj4eiu4vTPjgVOynm78v_4rS3_YpEhAhOCIokYal6mPC__8gcxiqGhQl6zOi20HGlGzCl4kIwawyIVUsMA&key=AIzaSyA-iCNYt6ham4ygfAp6AAAEUDgJcEgFpvM');">
+									<a href="/destinations/Oceania"></a>
+								</div>
+
+								<div class="card-content">
+									<h2><a href="/destinations/Oceania">Oceania</a></h2>
+								</div>
+
+
+							</div>
+							<!--<pre>{{itinerary | json}}</pre>-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

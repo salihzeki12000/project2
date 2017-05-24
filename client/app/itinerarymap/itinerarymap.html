@@ -1,0 +1,692 @@
+
+<style>
+
+  #floating {
+    top: 10px;
+    width: 310px;
+    height: 100px;
+    left: 10px;
+    z-index: 10;
+    position: absolute;
+  }
+
+  #day{
+    top: 10px;
+    width: 100px;
+    height: 100px;
+    left: 10px;
+    z-index: 10;
+    position: absolute;
+  }
+
+  #mode{
+    top: 10px;
+    width: 210px;
+    height: 100px;
+    left: 110px;
+    z-index: 10;
+    position: absolute;
+  }
+
+  #statistics{
+    top: 75px;
+    width: 310px;
+    height: 40px;
+    left: 10px;
+    z-index: 10;
+    position: absolute;
+  }
+
+  @media (max-width: 767px) {
+    /*#floating {
+      display: none; } 
+    #mapcontainer {
+      display: none;
+    }
+    .footer-listingmap {
+      display: none;
+    }*/
+    #calendar-button {
+      display: none;
+    }
+  }
+
+  #sidebar{
+    height: 700px;
+  }
+
+  #gmaps {
+    width: 100%;
+    height: 700px;
+  }
+  
+  .btn {
+    margin: 5px;
+  }
+  
+  .footer-listingmap {
+    font-size: 10px;
+  }
+  
+  .widgettitle {
+    margin: 0 0 0 0;
+  }
+  
+  .fa-times-circle {
+    cursor: pointer;
+    color: rgba(103, 106, 108, 0.38);
+    font-size: 40px;
+  }
+  
+  .fa-times-circle:hover {
+    color: rgba(103, 106, 108, 1);
+  }
+  
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch input {
+    display: none;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  /* Rounded sliders */
+  
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  
+  #fixedwidth {
+    width: 350px !important;
+  }
+
+  #rowsidebar {
+    margin-left: 0px !important;
+  }
+  
+  #mapcontainer {
+    padding-left: 0;
+
+  }  
+  #detailactivity {
+    box-sizing: border-box;
+  }
+  
+  .post {
+    margin: 0;
+  }
+
+  .posts{
+    margin-top: 50px 
+  }
+
+  .post-image {
+    max-width:100%;
+    max-height:100%;
+  }
+
+  .post-title h2 {
+    white-space: normal;
+  }
+  
+  #calendar {
+    white-space: nowrap;
+    overflow: auto;
+  }
+  
+  #calendarelem {
+    display: inline-block;
+    float: none;
+  }
+
+  .filter {
+    margin: 0 0 10px 0;
+    padding: 15px;
+}
+
+	.nav-item > a.btn-secondary:hover {
+		color: #000 !important;
+	}
+	.nav-item {
+ 		margin-top: 12px;
+	}
+
+  #mode-select {
+    height: 32px;
+    line-height: 20px;
+  }
+
+.card-small:last-child {
+    margin-bottom: 5px;
+}
+
+pageslide {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.form-control {
+    font-size: 14px;
+    height: 28px;
+    line-height: 20px;
+}
+</style>
+<toaster-container></toaster-container>
+
+<div class="row" id="all">
+  <div class="col-md-3" id="sidebar">
+  </div>
+  <div class="col-md-9" id="mapcontainer">
+    <div id="gmaps"></div>
+
+    <div id="floating" class="filter">
+      <div class="row">
+        <div class="col-md-4" id="day">
+          <div class="form-group">
+            <label>Day</label>
+            <select id="mode-select" ng-model="selectData.selectedOption" class="form-control" 
+            ng-change="viewMarkersDay(selectData.selectedOption.id);gotoTop()"
+            ng-options="option.name for option in selectData.availableOptions track by option.id"> 
+            </select>
+          </div>
+        </div>
+        <div class="col-md-8" id="mode">
+          <div class="form-group">
+            <label>Mode of travel</label>
+            
+            <select id="mode-select" ng-model="mode" class="form-control">
+              <option value="DRIVING"> Driving</option>
+              <option value="WALKING"> Walking</option>
+              <option value="BICYCLING"> Bicycling</option>
+              <!--<option value="TRANSIT"> Transit</option>-->
+          </select>
+          
+        </div>
+        </div>        
+      </div>
+      <div class="row">
+        <div class="col-md-12" id="statistics" >
+          <p ng-if="!routerror"><strong>Total: {{totalDist | number:2}} km | {{totalDur}}</strong> (<i ng-if="mode=='WALKING'" class="fa fa-male" aria-hidden="true"></i><i ng-if="mode=='DRIVING'" class="fa fa-car" aria-hidden="true"></i><i ng-if="mode=='BICYCLING'" class="fa fa-bicycle" aria-hidden="true"></i>)</p>
+          <p ng-if="routerror" style="color: red"><b>{{routerror | lowercase}}</b></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="footer-listingmap">
+  <div class="row center">
+    <p ng-if="itinerary.name">
+      Based on the page <a target="_blank" href="https://en.wikivoyage.org/wiki/{{itinerary.name}}">{{itinerary.name}}</a>.
+      See this page's
+      <a target="_blank" href="https://en.wikivoyage.org/w/index.php?title={{itinerary.name}}&action=history">contributions</a>.
+      Text is available under the <a target="_blank" href="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike License</a>.
+    </p>
+  </div>
+</div>
+
+
+<!--Recommendation list-->
+<pageslide ps-open="open" ps-click-outside="false" ps-container='sidebar' ps-side="left" ps-size="100%" ps-zindex="3000">
+  <a href="#" ng-click="closeActivities()" ><i class="fa fa-times-circle pull-right"></i></a>
+  <div class="row">
+      <div class="col-md-12">
+          <!--<label>Select an activity from our records!</label>-->
+          <div class="input-group" id="scrollable-dropdown-menu">
+              <div class="input-group-addon" style="border: 1px solid rgba(255, 255, 255, 0.15); background-color: #f3f3f3;">
+                  <i class="fa fa-plus" aria-hidden="true"></i> 
+              </div>
+              
+              <input type="text" ng-model="actSelected" placeholder="Add activity to your itinerary (day {{numday3 + 1}})" 
+                  uib-typeahead="act as label(act) for act in resultActivity | filter:{name:$viewValue} | limitTo:200"
+                  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-focus-first="true" typeahead-no-results="noresult"
+                  typeahead-select-on-blur="true" autocomplete="off" typeahead-on-select ="addActItinerary($model, numday3)">
+              
+              
+          </div>
+      </div>
+  </div>
+  <div id="rowsidebar" class="row">
+    <div class="col-md-12">
+      <div ui-tree data-drag-delay="200" ng-if="activityAllLimit.length > 0">
+        <div ui-tree-nodes ng-model="activityAllLimit" class="cards-small-wrapper">
+          
+          <p > Add activities to your itinerary or wishlist</p>
+          <div ui-tree-handle ng-mouseover="markerBounce(activity)" ng-mouseleave="markerStopBounce(activity)" 
+          class="card-small" ng-repeat="activity in activityAllLimit" ui-tree-node>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="card-small-image">
+                  <a href="" ng-click="goDetailActivity(activity)" ng-if="!activity.photo_reference==''" style="background-image: url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=380&photoreference={{activity.photo_reference}}&key=AIzaSyA-iCNYt6ham4ygfAp6AAAEUDgJcEgFpvM');"></a>
+
+                  <a href="" ng-click="goDetailActivity(activity)" ng-if="activity.photo_reference==''" style="background-image: url('assets/img/tmp/card-2.jpg');"></a>
+                </div>
+
+              </div>
+              <div class="col-md-9">
+                <div class="card-small-content" ng-show="!activity.ext">
+                  <h4 ng-if="activity.acttype == 'Food & Drink'"> <span class="label label-food">{{activity.acttype}}</span></h4>
+                  <h4 ng-if="activity.acttype == 'Accommodation'"> <span class="label label-accommodation">{{activity.acttype}}</span></h4>
+                  <h4 ng-if="activity.acttype == 'Sightseeing'"> <span class="label label-sightseeing">{{activity.acttype}}</span></h4>
+                  <h4 ng-if="activity.acttype == 'Shopping'"> <span class="label label-shopping">{{activity.acttype}}</span></h4>
+                  <h4 ng-if="activity.acttype == 'Things to do'"> <span class="label label-thingsdo">{{activity.acttype}}</span></h4>
+                  <h3><a href="" ng-click="goDetailActivity(activity)">{{activity.name}}</a></h3>
+                  <h3 ng-if="activity.place"><a href="/itinerary-map/{{activity.place}}/{{id}}">{{activity.place}}</a></h3>
+                  <h4 ng-if="activity.rank > 0"><span>Rating: </span><strong>{{activity.rank}} </strong><img src="assets/img/google13x13.png" alt=""> </h4>
+                  <h4 ng-if="activity.n_activities > 0"><span># Activities: </span><strong>{{activity.n_activities}} </strong></h4>
+
+                  <a href="" ng-if="activity.name" ng-click="favoriteAct(activity)" class="card-action-icon pull-right">
+                    <i class="md-icon" tooltip-placement="bottom" uib-tooltip="Save activity to your wish list">favorite</i>
+                  </a>
+                  <a href="" ng-if="activity.name" ng-click="addActItinerary(activity, numday3)" class="card-action-icon pull-right">
+                    <i class="md-icon" tooltip-placement="bottom" uib-tooltip="Save activity to your itinerary">add_box</i>
+                  </a>
+                </div>
+
+                <div class="card-small-content" ng-show="activity.ext">
+                  <h3><a href="{{activity.lat}}" target="_blank">{{activity.name}}</a></h3>
+
+                  <a href="" ng-click="deleteActDays(activity)" class="card-action-icon pull-right"><i class="md-icon">delete</i><span></span></a>
+                </div>
+              </div>
+
+
+            </div>
+
+          </div>
+        </div>
+        
+      </div>
+      <div ng-if="activityAllLimit.length == 0">
+        Sorry, no results for this category
+      </div>
+    </div>
+  </div>
+</pageslide>
+
+<!--Detail Activity-->
+<pageslide id="detailactivity" ps-side='left' ps-open="opendetail" ps-container="sidebar" ps-click-outside="true" ps-size="100%" ps-zindex="4000">
+  <div id="rowsidebar" class="row" ng-mouseover="markerBounce(detailactivity)" ng-mouseleave="markerStopBounce(detailactivity)" >
+    <div class="col-md-12">
+      
+
+      <div class="posts">
+        
+        <div class="post">
+          <a href="#" ng-click="opendetail=false;markerStopBounce(detailactivity);"><i class="fa fa-times-circle pull-right"></i></a>
+          <div class="center">
+            <img class="post-image" ng-if="!detailactivity.photo_reference==''" src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=380&photoreference={{detailactivity.photo_reference}}&key=AIzaSyA-iCNYt6ham4ygfAp6AAAEUDgJcEgFpvM">
+            <img class="post-image" ng-if="detailactivity.photo_reference==''" src="assets/img/tmp/card-2.jpg">  
+          </div>
+        <br>
+        <div class="post-title">
+          <h2>{{detailactivity.name}}</h2>
+        </div>
+
+        <div class="post-meta">
+          
+          <div class="post-meta-item">
+            <span ng-if="detailactivity.acttype == 'Food & Drink'" class="label label-food">{{detailactivity.acttype}}</span>
+            <span ng-if="detailactivity.acttype == 'Accommodation'" class="label label-accommodation">{{detailactivity.acttype}}</span>
+            <span ng-if="detailactivity.acttype == 'Sightseeing'" class="label label-sightseeing">{{detailactivity.acttype}}</span>
+            <span ng-if="detailactivity.acttype == 'Shopping'" class="label label-shopping">{{detailactivity.acttype}}</span>
+            <span ng-if="detailactivity.acttype == 'Things to do'" class="label label-thingsdo">{{detailactivity.acttype}}</span>
+          </div>
+
+          <div class="post-meta-item">
+            <a href="" ng-if="detailactivity.name" ng-click="favoriteAct(detailactivity)" class="card-action-icon pull-right">
+              <i class="md-icon" tooltip-placement="bottom" uib-tooltip="Save activity to your wish list">favorite</i>
+            </a>
+            <a href="" ng-if="detailactivity.name" ng-click="addActItinerary(detailactivity, numday3)" class="card-action-icon pull-right">
+              <i class="md-icon" tooltip-placement="bottom" uib-tooltip="Save activity to your itinerary">add_box</i>
+            </a>
+          </div>
+
+          <div ng-if="detailactivity.rank > 0" class="post-meta-item">
+            Ranking: {{detailactivity.rank}} <img src="assets/img/google13x13.png">
+          </div>
+
+          <div ng-if="detailactivity.address" class="post-meta-item">
+            <i class="fa fa-map-marker"></i> {{detailactivity.address}}, {{detailactivity.article}}
+          </div>
+
+          <div ng-if="detailactivity.price" class="post-meta-item">
+            <i class="fa fa-money"></i> {{detailactivity.price}}
+          </div>
+        </div>
+
+
+        <div class="post-content">
+          <p>
+            {{detailactivity.description}}
+          </p>
+        </div>
+        <!-- /.post-content -->
+
+        <div ng-if="detailactivity.url" class="post-read-more">
+          <a target="_blank" href="{{detailactivity.url}}">See More <i class="fa fa-chevron-right"></i></a>
+        </div>
+        <!-- /.post-read-more -->
+      </div>
+      <!-- /.post-->
+    </div>
+  </div>
+  </div>
+</pageslide>
+
+
+<!--Itinerary-->
+<pageslide ps-side='left' ps-open="true" ps-click-outside="false" ps-container="sidebar" ps-size="100%" style="margin-right: 5px;" ps-zindex="0">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="filter filter-gray">
+        <div class="row">
+          <div class="col-md-12">
+            <h3 class="widgettitle"><b>{{itinerary.name}}</b></h3>
+            <h3 class="widgettitle">Your Itinerary ({{numdays2}} days)</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <a id="calendar-button" href="" ng-click="openitinerary=true" class="btn btn-sm btn-secondary pull-right" style="padding: 0.25rem 0.75rem;font-size: 0.875rem;border-radius: 0.2rem;"><i class="md-icon">list</i> Calendar View</a>
+            <p class="small"><i class="fa fa-hand-o-up"></i> Drag activities to sort them out</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div ui-tree data-drag-delay="200">
+            <uib-accordion close-others="false">
+              <!--Flights-->
+              <div uib-accordion-group class="panel-danger" is-open="flights.open">
+                <uib-accordion-heading>
+                  <b>Flights</b>
+                  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': flights.open, 'glyphicon-chevron-right': !flights.open}"></i>
+                </uib-accordion-heading>
+                <div class="row">
+                  <div class="col-md-12">                                    
+                      <!--<div class="form-group">
+                          <label><small><b>Origin</b></small></label>
+                          <input type="text" ng-model="origin.name" class="form-control" placeholder="City Origin"> 
+                      </div>-->
+                      <label><small><b>Origin</b></small></label>
+                      <div id="scrollable-dropdown-menu">
+                        <input type="text" ng-model="citySelected" placeholder="City Origin" 
+                            uib-typeahead="cit as labelCity(cit) for cit in cities | filter:{name:$viewValue} | limitTo:200"
+                            class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-focus-first="true" typeahead-no-results="noresult"
+                            typeahead-select-on-blur="true" autocomplete="off" typeahead-on-select ="setCity($model)">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                      <label><small><b>Adults</b></small></label>
+                      <input type="number" ng-model="adults" class="form-control" placeholder="Adults">   
+                  </div>
+                  <div class="col-md-4">
+                      <label><small><b>Children</b></small></label>
+                      <input type="number" ng-model="children" class="form-control" placeholder="Children">   
+                  </div>
+                  <div class="col-md-4">
+                      <label><small><b>Infants</b></small></label>
+                      <input type="number" ng-model="infants" class="form-control" placeholder="Infants">   
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group">
+                        <label><small><b>Ticket class</b></small></label>
+                        <select ng-model="ticketclass" class="form-control">
+                            <option value="">Ticket class</option>
+                            <option value="0"> Economy</option>
+                            <option value="1"> Business</option>
+                            <option value="2"> First</option>
+                        </select>   
+                      </div>
+                  </div>                  
+                </div>
+                <!--<label>Select Airport:</label>
+                <div ng-repeat="fli in itinerary.flight" class="cards-small-wrapper">
+                  <div class="card-small rcorners-flight">
+                    <div class="row">
+                      <div class="col-md-12">
+                          <div class="card-small-content">
+                            <a href="http://jetradar.com/searches/new?origin_iata={{origin}}&destination_iata={{fli.iata_code}}&adults={{adults}}&children={{children}}&infants={{infants}}&trip_class={{ticketclass}}&depart_date={{departd[0]}}&return_date={{returnd[0]}}&marker=135002.flights&with_request=true" target="_blank">{{fli.name}}</a>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>-->
+                <div class="row">
+                  <div class="col-md-12 line-booking">
+                    <!--city = Sydney-->
+                    <a href="http://www.travelpayouts.com/?marker=135002&locale=en" target="_blank"><img src="assets/img/travelpayout_logo.png" class="pull-left" alt="Travelpayout" title="Travelpayout" height="40" width="100"></a>
+                    <a href="http://jetradar.com/searches/new?origin_iata={{citySelected.iata_code}}&destination_iata={{itinerary.flight[0].iata_code}}&adults={{adults}}&children={{children}}&infants={{infants}}&trip_class={{ticketclass}}&depart_date={{departd[0]}}&return_date={{returnd[0]}}&marker=135002.flights&with_request=true" target="_blank" class="btn btn-danger btn-raised pull-right">Search flights <i class="material-icons exit-icon">exit_to_app</i></a>
+                  </div>
+                </div>
+              </div>
+              <!--End Flights-->
+              <!--Accommodation-->
+              <div uib-accordion-group class="panel-warning" is-open="accomm.open">
+                <uib-accordion-heading>
+                  <b>Accommodation</b>
+                  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': accomm.open, 'glyphicon-chevron-right': !accomm.open}"></i>
+                </uib-accordion-heading>
+                <div class="row">
+                  <div class="col-md-4">
+                      <label><small><b>Rooms</b></small></label>
+                      <input type="number" ng-model="rooms" class="form-control" placeholder="Rooms">   
+                  </div>
+                  <div class="col-md-4">
+                      <label><small><b>Adults</b></small></label>
+                      <input type="number" ng-model="group_adults" class="form-control" placeholder="Adults">   
+                  </div>
+                  <div class="col-md-4">
+                      <label><small><b>Children</b></small></label>
+                      <input type="number" ng-model="group_children" class="form-control" placeholder="Children">   
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 line-booking">
+                    <!--city id = Sydney [Need to be change when API is done]-->
+                    <a href="http://www.booking.com/searchresults.en.html?city=-1603135&aid=1279987&checkin_monthday={{checkin[2]}}&checkin_month={{checkin[1]}}&checkin_year={{checkin[0]}}&checkout_monthday={{checkout[2]}}&checkout_month={{checkout[1]}}&checkout_year={{checkout[0]}}&no_rooms={{rooms}}&group_adults={{group_adults}}&group_children={{group_children}}&room1=A%2CA%2C2" target="_blank"><img src="assets/img/Booking.com_logo.png" class="pull-left" alt="Booking.com" title="Booking.com" height="20" width="100"></a>
+                    <a href="http://www.booking.com/searchresults.en.html?city=-1603135&aid=1279987&checkin_monthday={{checkin[2]}}&checkin_month={{checkin[1]}}&checkin_year={{checkin[0]}}&checkout_monthday={{checkout[2]}}&checkout_month={{checkout[1]}}&checkout_year={{checkout[0]}}&no_rooms={{rooms}}&group_adults={{group_adults}}&group_children={{group_children}}&room1=A%2CA%2C2" target="_blank" class="btn btn-warning btn-raised pull-right">Book Now <i class="material-icons exit-icon">exit_to_app</i></a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 line-booking">
+                    <!--city = Sydney-->
+                    <a href="https://hotellook.com/?marker=135002&destination={{itinerary.name}}&checkIn={{departd[0]}}&checkOut={{returnd[0]}}&adults={{group_adults}}" target="_blank" ><img src="assets/img/hotellook_logo.png" class="pull-left" alt="Hotellook" title="Hotellook" height="20" width="100"></a>
+                    <a href="https://hotellook.com/?marker=135002&destination={{itinerary.name}}&checkIn={{departd[0]}}&checkOut={{returnd[0]}}&adults={{group_adults}}" target="_blank" class="btn btn-warning btn-raised pull-right">Book Now <i class="material-icons exit-icon">exit_to_app</i></a>
+                  </div>
+                </div>
+                <!--<div class="row">
+                  <div class="col-md-12">
+                    <img src="assets/img/Booking.com_logo.png" alt="Booking.com logo" height="20" width="100">
+                  </div>
+                </div>-->
+                
+              </div>
+              <!--End Accommodation-->
+              <!--Itinerary Days-->
+              <div uib-accordion-group class="panel-default" ng-repeat="day in itinerary.days" is-open="day.status" >
+                <uib-accordion-heading>
+                  <b ng-click="viewMarkersDay(day.day);gotoTop()" >Day {{day.day +1}}</b> 
+                  <span ng-click="viewMarkersDay(day.day);gotoTop()" class="label label-actcount" style="font-size: 12px">{{day.activities.length}} activities</span>
+                  
+                  <i class="pull-right glyphicon" ng-click="viewMarkersDay(day.day);gotoTop()" ng-class="{'glyphicon-chevron-down': day.status, 'glyphicon-chevron-right': !day.status}"></i>
+                  <!--<i class="fa fa-external-link pull-right" ng-click="openModalNewAct(day)" style="margin-right: 5px;" aria-hidden="true"></i>-->
+                </uib-accordion-heading>
+
+                <div ui-tree-nodes="" ng-model="day.activities" ng-repeat="activity in day.activities track by $index" class="cards-small-wrapper">
+                  <div ui-tree-handle ng-mouseover="markerBounce(activity)" ng-mouseleave="markerStopBounce(activity)" 
+                  class="card-small rcorners-food" ng-if="activity.acttype=='Food & Drink'" ui-tree-node>
+                    <div activity-box ></div>
+                  </div>
+                  <div ui-tree-handle ng-mouseover="markerBounce(activity)" ng-mouseleave="markerStopBounce(activity)" 
+                  class="card-small rcorners-accommodation" ng-if="activity.acttype=='Accommodation'" ui-tree-node>
+                    <div activity-box ></div>
+                  </div>
+                  <div ui-tree-handle ng-mouseover="markerBounce(activity)" ng-mouseleave="markerStopBounce(activity)" 
+                  class="card-small rcorners-sightseeing" ng-if="activity.acttype=='Sightseeing'" ui-tree-node>
+                    <div activity-box ></div>
+                  </div>
+                  <div ui-tree-handle ng-mouseover="markerBounce(activity)" ng-mouseleave="markerStopBounce(activity)" 
+                  class="card-small rcorners-shopping" ng-if="activity.acttype=='Shopping'" ui-tree-node>
+                    <div activity-box ></div>
+                  </div>
+                  <div ui-tree-handle ng-mouseover="markerBounce(activity)" ng-mouseleave="markerStopBounce(activity)" 
+                  class="card-small rcorners-thingsdo" ng-if="activity.acttype=='Things to do'" ui-tree-node>
+                    <div activity-box ></div>
+                  </div>
+                </div>
+              </div>
+            </uib-accordion>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</pageslide>
+
+<!--Whish List-->
+<pageslide ps-side='right' ps-open="checked" ps-container="mapcontainer" style="margin-right: 10px;" ps-zindex="5000">
+  <div class="row">
+      <div class="col-md-12">
+        <a href="" ng-click="openWish()" ><i class="fa fa-times-circle pull-right"></i></a>
+        <div class="filter filter-gray">
+        <h3 class="widgettitle">Your Wish List</h3>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+
+            <!--<button ng-click="clearActWishes()" class="btn btn-secondary btn-sm pull-right"><i class="md-icon">delete</i> Clear All</button>-->
+            <div ui-tree data-drag-delay="200" ng-repeat="act in itinerary.activities" ng-show="act.activities.length > 0">
+              <div ui-tree-nodes="" ng-model="act.activities" ng-repeat="activity in act.activities"  class="cards-small-wrapper">
+
+                <div ui-tree-handle class="card-small rcorners-food" ng-if="activity.acttype=='Food & Drink'" ui-tree-node>
+                  <div activity-box ></div>
+                </div>
+                <div ui-tree-handle class="card-small rcorners-accommodation" ng-if="activity.acttype=='Accommodation'" ui-tree-node>
+                  <div activity-box ></div>
+                </div>
+                <div ui-tree-handle class="card-small rcorners-sightseeing" ng-if="activity.acttype=='Sightseeing'" ui-tree-node>
+                  <div activity-box ></div>
+                </div>
+                <div ui-tree-handle class="card-small rcorners-shopping" ng-if="activity.acttype=='Shopping'" ui-tree-node>
+                  <div activity-box ></div>
+                </div>
+                <div ui-tree-handle class="card-small rcorners-thingsdo" ng-if="activity.acttype=='Things to do'" ui-tree-node>
+                  <div activity-box ></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+</pageslide>
+
+<!--Calendar View-->
+<pageslide ps-open="openitinerary" ps-click-outside="false" ps-container='all' ps-size="100%" ps-zindex="2000">
+  <div class="row">
+    <div class="col-md-12" style="margin-left: 20px; padding-right: 40px;">
+      <div class="row">
+        <div class="col-md-12">
+          <a href="#" ng-click="openitinerary=false"><i class="fa fa-times-circle pull-right"></i></a>
+          <h3 class="widgettitle"><b>{{itinerary.name}}</b> - Your Itinerary ({{numdays2}} days)</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <!--<small><b>Total: {{totalDist | number:2}} km | {{totalDur}}</b></small>-->
+          <p class="small"><i class="fa fa-hand-o-up"></i> Drag activities to sort them out</p>
+        </div>
+        <form>
+          <div class="col-md-8">
+            <div class="form-group">
+              <div class="input-group col-sm-4 col-md-4">
+              <input type="number" ng-model="numdays" min="0" max="100" class="form-control" placeholder="Modify N° days">
+            
+            <!--<i class="fa fa-question-circle pull-left" tooltip-placement="bottom" uib-tooltip="Set a number of days for your itinerary"
+              aria-hidden="true"></i>-->
+              <div class="input-group-btn">
+              <button ng-click="saveDays()" class="btn btn-primary btn-sm">Apply</button>
+              </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div id="calendar" class="row">
+        <div ui-tree data-drag-delay="200" id="calendarelem" class="widget col-md-3" ng-repeat="day in itinerary.days">
+          <h2 class="widgettitle">Day {{day.day + 1}} <span class="label label-actcount" style="font-size: 12px">{{day.activities.length}} activities</span></h2><br>
+          <div ui-tree-nodes="" ng-model="day.activities" ng-repeat="activity in day.activities" class="cards-small-wrapper">
+            <div ui-tree-handle class="card-small rcorners-food" ng-if="activity.acttype=='Food & Drink'" ui-tree-node>
+              <div activity-box ></div>
+            </div>
+            <div ui-tree-handle class="card-small rcorners-accommodation" ng-if="activity.acttype=='Accommodation'" ui-tree-node>
+              <div activity-box ></div>
+            </div>
+            <div ui-tree-handle class="card-small rcorners-sightseeing" ng-if="activity.acttype=='Sightseeing'" ui-tree-node>
+              <div activity-box ></div>
+            </div>
+            <div ui-tree-handle class="card-small rcorners-shopping" ng-if="activity.acttype=='Shopping'" ui-tree-node>
+              <div activity-box ></div>
+            </div>
+            <div ui-tree-handle class="card-small rcorners-thingsdo" ng-if="activity.acttype=='Things to do'" ui-tree-node>
+              <div activity-box ></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</pageslide>

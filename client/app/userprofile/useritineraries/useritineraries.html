@@ -1,0 +1,68 @@
+<div class="content-title">
+    <div class="container center">
+        <h2>Your saved itineraries</h2>
+
+        <p>
+            Check itineraries created by you!
+        </p>
+    </div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="cards-wrapper">
+				<div class="row">
+
+                    <div class="col-sm-6 col-md-3" dir-paginate="itinerary in itineraries | itemsPerPage:8">
+                        <div class="card">
+
+                            <div class="card-image" ng-if="!itinerary.photo==''" style="background-image: url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=380&photoreference={{itinerary.photo}}&key=AIzaSyA-iCNYt6ham4ygfAp6AAAEUDgJcEgFpvM');">
+                                <!--<a href="/public-itinerary/{{itinerary.name}}&{{itinerary._id}}"></a>-->
+                                <a href="" ng-click="goItineraryMap(itinerary)"></a>
+                                <div class="card-image-count">
+                                    <strong>{{itinerary.itilength}}</strong>
+                                    <span>days</span>
+                                </div>
+                            </div>
+
+                            <div class="card-image" ng-if="itinerary.photo==''" style="background-image: url('assets/img/tmp/card-2.jpg');">
+                                <!--<a href="/public-itinerary/{{itinerary.name}}&{{itinerary._id}}"></a>-->
+                                <a href="" ng-click="goItineraryMap(itinerary)"></a>
+                                <div class="card-image-count">
+                                    <strong>{{itinerary.itilength}}</strong>
+                                    <span>days</span>
+                                </div>
+                            </div>
+
+                            <div class="card-content">
+                                <h2><a href="" ng-click="goItineraryMap(itinerary)">{{itinerary.name}} itinerary</a></h2>
+                            </div>
+
+                            <div class="card-actions">
+                                <a href="" class="card-action-icon"><i class="md-icon">access_time</i><span> {{itinerary.created | date:'MMM d, y'}}</span></a>                                
+                                <a href="" uib-popover-template="'myPopoverItinerary.html'" popover-title="Notes" popover-placement="auto top-left" popover-trigger="'outsideClick'" ng-click="clickNotes(itinerary)" class="card-action-icon pull-left"><i class="md-icon">insert_comment</i></a>
+                                <a href="" ng-click="deleteItinerary(itinerary)" class="card-action-icon pull-right"><i class="md-icon">delete</i></a>
+
+                            </div>
+                             <script type="text/ng-template" id="myPopoverItinerary.html">
+                                <!--<div>Add notes</div>-->
+                                <div class="form-group">
+                                <label>Add notes:</label>
+                                <!--<input ng-model="itinerary.id" type="hidden"/>-->
+                                <textarea rows="10" cols="30" ng-model="itinerary.notes" class="form-control"></textarea>
+                                </div>
+                            </script>
+                        </div>
+                    </div>
+				
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="row center">
+        <div class="col-sm-12">
+        <dir-pagination-controls max-size="7" direction-links="true" boundary-links="true">
+        </dir-pagination-controls>
+        </div>
+    </div>
+</div>

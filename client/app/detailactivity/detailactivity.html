@@ -1,0 +1,127 @@
+<toaster-container></toaster-container>
+
+<div class="content-title">
+  <div class="container">
+    <div class="row">
+      <h1>{{activity.name}} in {{activity.article}}</h1>
+
+      <ul class="breadcrumb">
+        <li><a ui-sref="main">Home</a> <i class="md-icon">keyboard_arrow_right</i></li>
+        <li><a href="" ng-click="goBack()">Activities</a> <i class="md-icon">keyboard_arrow_right</i></li>
+        <li class="active">Detail Activity</li>
+
+      </ul>
+      <!-- /.breadcrumb -->
+    </div>
+    <div class="row">
+      <div class="post-read-more pull-left">
+        <a href="" ng-click="goBack()"><i class="fa fa-chevron-left"></i>  Back</a>
+      </div>
+      <!-- /.post-read-more <-->
+    </div>
+  </div>
+  <!-- /.container -->
+</div>
+<!-- /.content-title -->
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-lg-9">
+      <div class="push-top-bottom">
+        <div class="listing-detail">
+          <div class="gallery">
+            <div ng-if="!activity.photo_reference==''" class="gallery-item" style="background-image: url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference={{activity.photo_reference}}&key=AIzaSyA-iCNYt6ham4ygfAp6AAAEUDgJcEgFpvM');">
+              <div class="gallery-item-description">
+                {{activity.name}}
+              </div>
+              <!-- /.gallery-item-description -->
+            </div>
+            <!-- /.gallery-item -->
+            <!-- /.gallery -->
+            <div ng-if="activity.photo_reference==''" class="gallery-item" style="background-image: url('assets/img/tmp/gallery/1.jpg');">
+              <div class="gallery-item-description">
+                {{activity.name}}
+              </div>
+              <!-- /.gallery-item-description -->
+            </div>
+            <!-- /.gallery-item -->
+          </div>
+          <!-- /.gallery -->
+
+          <h2>Description</h2>
+
+          <p>
+            {{activity.content}}
+          </p>
+
+          <h2>Location</h2>
+
+          <div id="gmaps"></div>
+
+        </div>
+        <!-- /.listing-detail -->
+      </div>
+      <!-- /.push-top-bottom -->
+    </div>
+    <!-- /.col-sm-9 -->
+    <div class="col-md-4 col-lg-3">
+      <div class="sidebar">
+        <div class="widget">
+          <div class="overview">
+            <ul>
+              <li><strong>Save</strong>
+                <span ng-if="isLoggedIn"><a href="" class="card-action-icon active" ng-click="saveActivity(activity)"><i class="md-icon">favorite</i></a></span>
+                <span ng-if="!isLoggedIn"><a href="" class="card-action-icon active" ng-click="alertLogin()"><i class="md-icon">favorite</i></a></span>
+              </li>
+              <li><strong>Share</strong><span>
+              <button class="btn btn-secondary btn-link btn-facebook" 
+                socialshare socialshare-provider="facebook" 
+                socialshare-title="{{activity.name}} in {{activity.article}}"
+                socialshare-text="{{activity.content}}"
+                socialshare-url="{{absUrl}}" socialshare-type="share" socialshare-via="571748713017786"
+                socialshare-display="popup" socialshare-from="Blogotravel"
+                socialshare-redirect-uri="{{absUrl}}">
+                <i class="fa fa-facebook"> Share</i>
+                </button>
+              </span></li>
+              <li ng-if="activity.price"><strong>Price</strong><span>{{activity.price}}</span></li>
+              <li ng-if="activity.article"><strong>Location</strong><span>{{activity.article}}</span></li>
+              <li ng-if="activity.type"><strong>Category</strong><span>{{activity.type}}</span></li>
+              <li ng-if="activity.rank > 0"><strong>Rating</strong><span>{{activity.rank}}</span></li>
+              <li ng-if="activity.phone"><strong>Phone</strong><span>{{activity.phone}}</span></li>
+              <li ng-if="activity.url"><strong>Website</strong><span><a href="{{activity.url}}" target="_blank">link</a></span></li>
+            </ul>
+          </div>
+          <!-- /.overview -->
+        </div>
+        <!-- /.widget -->
+
+        <div class="widget">
+          <h2 class="widgettitle">Contact Information</h2>
+
+          <ul class="contact">
+            <li ng-if="activity.email"><i class="md-icon">email</i> <a href="{{activity.email}}">mail</a></li>
+            <li ng-if="activity.url"><i class="md-icon">link</i> <a target="_blank" href="{{activity.url}}">link</a></li>
+            <li ng-if="activity.phone"><i class="md-icon">phone</i> {{activity.phone}}</li>
+            <li ng-if="activity.address"><i class="md-icon">location_on</i> {{activity.address}}, {{activity.article}}</li>
+          </ul>
+        </div>
+        <!-- /.widget -->
+
+
+      </div>
+      <!-- /.sidebar -->
+    </div>
+    <!-- /.col-* -->
+  </div>
+  <!-- /.row -->
+</div>
+<!-- /.container-->
+
+<style>
+  #gmaps {
+    width: 100%;
+    height: 600px;
+  }
+</style>

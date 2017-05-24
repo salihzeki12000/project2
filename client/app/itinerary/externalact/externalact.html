@@ -1,0 +1,51 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">New Activity </h3>
+</div>
+<div class="modal-body" id="modal-body">
+  <div class="row">
+    <div class="col-lg-12">
+        <p>Add your own activity for <b>{{itinerary.name}}</b> in day <b>{{numday+1}}</b></p>
+
+        <!--<div class="row">
+            <div class="col-md-12">
+                <label>Select an activity from our records!</label>
+                <div class="input-group" id="scrollable-dropdown-menu">
+                    <div class="input-group-addon" style="border: 1px solid rgba(255, 255, 255, 0.15); background-color: #f3f3f3;">
+                        <i class="fa fa-plus" aria-hidden="true"></i> 
+                    </div>
+                   
+                    <input type="text" ng-model="actSelected" placeholder="Add an activity in {{itinerary.name}} to your itinerary" 
+                        uib-typeahead="act as label(act) for act in actitis | filter:{name:$viewValue} | limitTo:200"
+                        class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-focus-first="true" typeahead-no-results="noresult"
+                        typeahead-select-on-blur="true" autocomplete="off" >
+                    
+                    typeahead-on-select ="setWishActivity($model)"
+                </div>
+            </div>
+        </div>
+        <br><br>-->
+        <div class="row">
+            <div class="col-md-12"> 
+                <label>Add your own activity!</label>
+                <div class="row">
+                <div class="col-md-4 ">                                    
+                    <div class="form-group">
+                        <!--<label>Add an external activity</label>-->
+                        <input type="text" ng-model="extname" class="form-control" placeholder="Name"> 
+                    </div><!-- /.form-group -->
+                </div>
+                <div class="col-md-8">
+                    <input type="text" ng-model="extlink" class="form-control" placeholder="External Link">   
+                </div><!-- /.col-* -->
+                </div>
+            </div>
+        </div>
+        
+      </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <!--<button class="btn btn-primary" type="button" ng-click="createOFCtr.ok()">OK</button>-->
+    <button ng-click="ok()" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Add</button> 
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

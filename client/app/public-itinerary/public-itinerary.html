@@ -1,0 +1,447 @@
+
+<style>
+
+  #floating {
+    top: 10px;
+    width: 310px;
+    height: 100px;
+    left: 10px;
+    z-index: 10;
+    position: absolute;
+  }
+
+  #day{
+    top: 10px;
+    width: 100px;
+    height: 100px;
+    left: 10px;
+    z-index: 10;
+    position: absolute;
+  }
+
+  #mode{
+    top: 10px;
+    width: 210px;
+    height: 100px;
+    left: 110px;
+    z-index: 10;
+    position: absolute;
+  }
+
+  #statistics{
+    top: 75px;
+    width: 310px;
+    height: 40px;
+    left: 10px;
+    z-index: 10;
+    position: absolute;
+  }
+
+  @media (max-width: 767px) {
+    /*#floating {
+      display: none; } 
+    #mapcontainer {
+      display: none;
+    }
+    .footer-listingmap {
+      display: none;
+    }*/
+    #calendar-button {
+      display: none;
+    }
+  }
+
+  #sidebar{
+    height: 700px;
+  }
+
+  #gmaps {
+    width: 100%;
+    height: 700px;
+  }
+  
+  .btn {
+    margin: 5px;
+  }
+  
+  .footer-listingmap {
+    font-size: 10px;
+  }
+  
+  .widgettitle {
+    margin: 0 0 0 0;
+  }
+  
+  .fa-times-circle {
+    cursor: pointer;
+    color: rgba(103, 106, 108, 0.38);
+    font-size: 40px;
+  }
+  
+  .fa-times-circle:hover {
+    color: rgba(103, 106, 108, 1);
+  }
+  
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch input {
+    display: none;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  /* Rounded sliders */
+  
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  
+  #fixedwidth {
+    width: 350px !important;
+  }
+
+  #rowsidebar {
+    margin-left: 0px !important;
+  }
+  
+  #mapcontainer {
+    padding-left: 0;
+
+  }  
+  #detailactivity {
+    box-sizing: border-box;
+  }
+  
+  .post {
+    margin: 0;
+  }
+
+  .posts{
+    margin-top: 50px 
+  }
+
+  .post-image {
+    max-width:100%;
+    max-height:100%;
+  }
+
+  .post-title h2 {
+    white-space: normal;
+  }
+  
+  #calendar {
+    white-space: nowrap;
+    overflow: auto;
+  }
+  
+  #calendarelem {
+    display: inline-block;
+    float: none;
+  }
+
+  .filter {
+    margin: 0 0 10px 0;
+    padding: 15px;
+}
+
+	.nav-item > a.btn-secondary:hover {
+		color: #000 !important;
+	}
+	.nav-item {
+ 		margin-top: 12px;
+	}
+
+  #mode-select {
+    height: 32px;
+    line-height: 20px;
+  }
+
+.card-small:last-child {
+    margin-bottom: 5px;
+}
+
+pageslide {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.content-title h1 {
+    padding-left: 25px;
+}
+</style>
+
+<toaster-container></toaster-container>
+
+
+<div class="row">
+  <div class="col-md-8 content-title">
+    
+    <h1><b>{{itinerary.name}}</b> - Your Itinerary ({{itilength}} days)</h1>
+  </div>
+  <div class="col-md-4">
+    <!--<button class="btn btn-secondary btn-sm pull-right" socialshare socialshare-provider="facebook" socialshare-title="{{itinerary.name}} - {{itilength}} days itinerary"
+      socialshare-url="{{absUrl}}" socialshare-type="share" socialshare-via="571748713017786" socialshare-display="popup"
+      socialshare-from="Plannertrip" socialshare-redirect-uri="{{absUrl}}" socialshare-media="assets/img/logo/plannertrip_logo2.png">
+            <i class="fa fa-facebook"> </i> Share
+          </button>-->
+    <button ng-click="copyitinerary()" ng-if="isLoggedIn()" class="btn btn-primary btn-sm pull-right">
+            <i class="md-icon">content_copy</i> Copy itinerary</button>
+    <a id="calendar-button" href="" ng-click="openitinerary=true" class="btn btn-secondary btn-sm pull-right"><i class="md-icon">list</i> Calendar View</a>
+  </div>
+</div>
+    
+<div class="row" id="all">
+  <div class="col-md-3" id="sidebar">
+  </div>
+  <div class="col-md-9" id="mapcontainer">
+    <div id="gmaps"></div>
+
+    <div id="floating" class="filter">
+      <div class="row">
+        <div class="col-md-4" id="day">
+          <div class="form-group">
+            <label>Day</label>
+            <select id="mode-select" ng-model="selectData.selectedOption" class="form-control" 
+            ng-change="viewMarkersDay(selectData.selectedOption.id);gotoTop()"
+            ng-options="option.name for option in selectData.availableOptions track by option.id"> 
+            </select>
+          </div>
+        </div>
+        <div class="col-md-8" id="mode">
+          <div class="form-group">
+            <label>Mode of travel</label>
+            
+            <select id="mode-select" ng-model="mode" class="form-control">
+              <option value="DRIVING"> Driving</option>
+              <option value="WALKING"> Walking</option>
+              <option value="BICYCLING"> Bicycling</option>
+              <!--<option value="TRANSIT"> Transit</option>-->
+          </select>
+          
+        </div>
+        </div>        
+      </div>
+      <div class="row">
+        <div class="col-md-12" id="statistics" >
+          <p ng-if="!routerror"><strong>Total: {{totalDist | number:2}} km | {{totalDur}}</strong> (<i ng-if="mode=='WALKING'" class="fa fa-male" aria-hidden="true"></i><i ng-if="mode=='DRIVING'" class="fa fa-car" aria-hidden="true"></i><i ng-if="mode=='BICYCLING'" class="fa fa-bicycle" aria-hidden="true"></i>)</p>
+          <p ng-if="routerror" style="color: red"><b>{{routerror | lowercase}}</b></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+  <div class="footer-listingmap">
+    <div class="row center">
+      <p ng-if="itinerary.name">
+        Based on the page <a target="_blank" href="https://en.wikivoyage.org/wiki/{{itinerary.name}}">{{itinerary.name}}</a>.
+        See this page's
+        <a target="_blank" href="https://en.wikivoyage.org/w/index.php?title={{itinerary.name}}&action=history">contributions</a>.
+        Text is available under the <a target="_blank" href="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike License</a>.
+      </p>
+    </div>
+  </div>
+
+<!--Detail Activity-->
+<pageslide id="detailactivity" ps-side='left' ps-open="opendetail" ps-container="sidebar" ps-click-outside="true" ps-size="100%" ps-zindex="4000">
+  <div id="rowsidebar" class="row" ng-mouseover="markerBounce(detailactivity)" ng-mouseleave="markerStopBounce(detailactivity)" >
+    <div class="col-md-12">
+      
+
+      <div class="posts">
+        
+        <div class="post">
+          <a href="#" ng-click="opendetail=false;markerStopBounce(detailactivity);"><i class="fa fa-times-circle pull-right"></i></a>
+          <div class="center">
+            <img class="post-image" ng-if="!detailactivity.photo_reference==''" src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=380&photoreference={{detailactivity.photo_reference}}&key=AIzaSyA-iCNYt6ham4ygfAp6AAAEUDgJcEgFpvM">
+            <img class="post-image" ng-if="detailactivity.photo_reference==''" src="assets/img/tmp/card-2.jpg">  
+          </div>
+        <br>
+        <div class="post-title">
+          <h2>{{detailactivity.name}}</h2>
+        </div>
+
+        <div class="post-meta">
+          
+          <div class="post-meta-item">
+            <span ng-if="detailactivity.acttype == 'Food & Drink'" class="label label-food">{{detailactivity.acttype}}</span>
+            <span ng-if="detailactivity.acttype == 'Accommodation'" class="label label-accommodation">{{detailactivity.acttype}}</span>
+            <span ng-if="detailactivity.acttype == 'Sightseeing'" class="label label-sightseeing">{{detailactivity.acttype}}</span>
+            <span ng-if="detailactivity.acttype == 'Shopping'" class="label label-shopping">{{detailactivity.acttype}}</span>
+            <span ng-if="detailactivity.acttype == 'Things to do'" class="label label-thingsdo">{{detailactivity.acttype}}</span>
+          </div>
+
+          <div class="post-meta-item">
+            <a href="" ng-if="detailactivity.name" ng-click="favoriteAct(detailactivity)" class="card-action-icon pull-right">
+              <i class="md-icon" tooltip-placement="bottom" uib-tooltip="Save activity to your wish list">favorite</i>
+            </a>
+            <a href="" ng-if="detailactivity.name" ng-click="addActItinerary(detailactivity, numday3)" class="card-action-icon pull-right">
+              <i class="md-icon" tooltip-placement="bottom" uib-tooltip="Save activity to your itinerary">add_box</i>
+            </a>
+          </div>
+
+          <div ng-if="detailactivity.rank > 0" class="post-meta-item">
+            Ranking: {{detailactivity.rank}} <img src="assets/img/google13x13.png">
+          </div>
+
+          <div ng-if="detailactivity.address" class="post-meta-item">
+            <i class="fa fa-map-marker"></i> {{detailactivity.address}}, {{detailactivity.article}}
+          </div>
+
+          <div ng-if="detailactivity.price" class="post-meta-item">
+            <i class="fa fa-money"></i> {{detailactivity.price}}
+          </div>
+        </div>
+
+
+        <div class="post-content">
+          <p>
+            {{detailactivity.description}}
+          </p>
+        </div>
+        <!-- /.post-content -->
+
+        <div ng-if="detailactivity.url" class="post-read-more">
+          <a target="_blank" href="{{detailactivity.url}}">See More <i class="fa fa-chevron-right"></i></a>
+        </div>
+        <!-- /.post-read-more -->
+      </div>
+      <!-- /.post-->
+    </div>
+  </div>
+  </div>
+</pageslide>
+
+
+<!--Itinerary-->
+<pageslide ps-side='left' ps-open="true" ps-click-outside="false" ps-container="sidebar" ps-size="100%" style="margin-right: 5px;" ps-zindex="0">
+  <div class="row">
+    <div class="col-md-12">
+    
+
+          <!--<div ui-tree data-drag-delay="200">-->
+            <uib-accordion close-others="false">
+              <!--ng-mouseover="actopen=true"-->
+              <div uib-accordion-group class="panel-default" ng-repeat="day in itinerary.days" is-open="day.status" >
+                <uib-accordion-heading>
+                  <b ng-click="viewMarkersDay(day.day);gotoTop()" >Day {{day.day +1}}</b> 
+                  <span ng-click="viewMarkersDay(day.day);gotoTop()" class="label label-actcount" style="font-size: 12px">{{day.activities.length}} activities</span>
+                  
+                  <i class="pull-right glyphicon" ng-click="viewMarkersDay(day.day);gotoTop()" ng-class="{'glyphicon-chevron-down': day.status, 'glyphicon-chevron-right': !day.status}"></i>
+                  <!--<i class="fa fa-external-link pull-right" ng-click="openModalNewAct(day)" style="margin-right: 5px;" aria-hidden="true"></i>-->
+                </uib-accordion-heading>
+
+                <div ng-model="day.activities" ng-repeat="activity in day.activities track by $index" class="cards-small-wrapper">
+                  <div ng-mouseover="markerBounce(activity)" ng-mouseleave="markerStopBounce(activity)" 
+                  class="card-small rcorners-food" ng-if="activity.acttype=='Food & Drink'" >
+                    <div activity-box ></div>
+                  </div>
+                  <div ng-mouseover="markerBounce(activity)" ng-mouseleave="markerStopBounce(activity)" 
+                  class="card-small rcorners-accommodation" ng-if="activity.acttype=='Accommodation'" >
+                    <div activity-box ></div>
+                  </div>
+                  <div ng-mouseover="markerBounce(activity)" ng-mouseleave="markerStopBounce(activity)" 
+                  class="card-small rcorners-sightseeing" ng-if="activity.acttype=='Sightseeing'" >
+                    <div activity-box ></div>
+                  </div>
+                  <div ng-mouseover="markerBounce(activity)" ng-mouseleave="markerStopBounce(activity)" 
+                  class="card-small rcorners-shopping" ng-if="activity.acttype=='Shopping'" >
+                    <div activity-box ></div>
+                  </div>
+                  <div ng-mouseover="markerBounce(activity)" ng-mouseleave="markerStopBounce(activity)" 
+                  class="card-small rcorners-thingsdo" ng-if="activity.acttype=='Things to do'" >
+                    <div activity-box ></div>
+                  </div>
+                </div>
+              </div>
+            </uib-accordion>
+            
+      </div>
+  </div>
+</pageslide>
+
+<!--Calendar View-->
+<pageslide ps-open="openitinerary" ps-click-outside="false" ps-container='all' ps-size="100%" ps-zindex="2000">
+  <div class="row">
+    <div class="col-md-12" style="margin-left: 20px; padding-right: 40px;">
+      <!--<div class="row">
+        <div class="col-md-12">
+          
+          <h3 class="widgettitle"><b>{{itinerary.name}}</b> - Your Itinerary ({{numdays2}} days)</h3>
+        </div>
+      </div>-->
+      <div class="row">
+        <div class="col-md-12">
+          <a href="#" ng-click="openitinerary=false"><i class="fa fa-times-circle pull-right"></i></a>
+        </div>
+      </div>
+      <div id="calendar" class="row">
+        <div id="calendarelem" class="widget col-md-3" ng-repeat="day in itinerary.days">
+          <h2 class="widgettitle">Day {{day.day + 1}} <span class="label label-actcount" style="font-size: 12px">{{day.activities.length}} activities</span></h2><br>
+          <div ng-repeat="activity in day.activities" class="cards-small-wrapper">
+            <div class="card-small rcorners-food" ng-if="activity.acttype=='Food & Drink'">
+              <div activity-box ></div>
+            </div>
+            <div class="card-small rcorners-accommodation" ng-if="activity.acttype=='Accommodation'">
+              <div activity-box ></div>
+            </div>
+            <div class="card-small rcorners-sightseeing" ng-if="activity.acttype=='Sightseeing'">
+              <div activity-box ></div>
+            </div>
+            <div class="card-small rcorners-shopping" ng-if="activity.acttype=='Shopping'">
+              <div activity-box ></div>
+            </div>
+            <div class="card-small rcorners-thingsdo" ng-if="activity.acttype=='Things to do'">
+              <div activity-box ></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</pageslide>

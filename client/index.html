@@ -1,0 +1,232 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html ng-app="blogotripFullstackApp" class="no-js">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <base href="/">
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ metaservice.metaDescription() }}" />
+  <meta name="keywords" content="{{ metaservice.metaKeywords() }}" />
+
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">  
+
+  <!-- build:css(client) app/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+  <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.css" />
+  <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick.css" />
+  <link rel="stylesheet" href="bower_components/angular-bootstrap-toggle/dist/angular-bootstrap-toggle.min.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css({.tmp,client}) app/app.css -->
+  <!--<link rel="stylesheet" href="app/app.css">-->
+  <!-- injector:css -->
+  <link rel="stylesheet" href="app/admin/admin.css">
+  <link rel="stylesheet" href="app/app.css">
+  <link rel="stylesheet" href="components/footer/footer.css">
+  <link rel="stylesheet" href="components/modal/modal.css">
+  <link rel="stylesheet" href="components/oauth-buttons/oauth-buttons.css">
+  <!-- endinjector -->
+  <!-- endbuild -->
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+  <link href="assets/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="assets/css/owl.carousel.css" rel="stylesheet" type="text/css">
+  <!--<link href="assets/css/leaflet.css" rel="stylesheet" type="text/css">
+  <link href="assets/css/leaflet.markercluster.css" rel="stylesheet" type="text/css">
+  <link href="assets/css/leaflet.markercluster.default.css" rel="stylesheet" type="text/css">-->
+  <link href="assets/css/materialist.css" rel="stylesheet" type="text/css" id="css-primary">
+  <link rel="stylesheet" href="assets/css/toastr/toastr.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/slick.css"/>
+  <!-- Add the slick-theme.css if you want default styling -->
+  <link rel="stylesheet" type="text/css" href="assets/css/slick-theme.css"/>
+  <!--<script type="text/javascript">
+    window.smartlook||(function(d) {
+    var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];
+    var c=d.createElement('script');o.api=new Array();c.async=true;c.type='text/javascript';
+    c.charset='utf-8';c.src='//rec.smartlook.com/recorder.js';h.appendChild(c);
+    })(document);
+    smartlook('init', 'b824fd0954cc002e75a1252717b45296c64494fe');
+  </script>
+  <script type="text/javascript">
+    window.$crisp=[];window.CRISP_WEBSITE_ID="ac305da4-9f0c-45d4-a1da-00a9cf909894";
+    (function(){d=document;s=d.createElement("script");s.src="https://client.crisp.im/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();
+    </script>-->
+</head>
+
+<body >
+  <!--[if lt IE 7]>
+      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+  <!-- Add your site or application content here -->
+  <div class="page-wrapper">
+    <div class="header-wrapper" >
+      <navbar></navbar>
+    </div>
+    <!-- /.header-wrapper -->
+    <div class="main-wrapper">
+      <div class="main">
+        <div class="main-inner">
+
+
+          <div class="content">
+
+            <div ui-view=""></div>
+          </div>
+          <!-- /.content -->
+        </div>
+        <!-- /.main-inner -->
+      </div>
+      <!-- /.main -->
+    </div>
+    <!-- /.main-wrapper -->
+    <div class="footer-wrapper">
+      <footer></footer>
+    </div>
+    <!-- /.footer-wrapper -->
+  </div>
+  <!-- /.page-wrapper -->
+
+
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+  <!--<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-90995644-1', 'auto');
+
+</script>-->
+
+
+
+  <script type="text/javascript" src="assets/js/jquery.js"></script>
+  <script type="text/javascript" src="assets/js/tether.min.js"></script>
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="assets/js/materialist.js"></script>
+  
+  <!--<script type="text/javascript" src="assets/script/app.js"></script>-->
+  <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+  <!-- build:js({client,node_modules}) app/vendor.js -->
+  <!-- bower:js -->
+  <script src="bower_components/jquery/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="bower_components/lodash/dist/lodash.compat.js"></script>
+  <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+  <script src="bower_components/angularjs-google-maps/dist/angularjs-google-maps.js"></script>
+  <script src="bower_components/angularUtils-pagination/dirPagination.js"></script>
+  <script src="bower_components/SHA-1/sha1.js"></script>
+  <script src="bower_components/angulartics/src/angulartics.js"></script>
+  <script src="bower_components/angulartics-google-analytics/lib/angulartics-ga.js"></script>
+  <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+  <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+  <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+  <script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
+  <script src="bower_components/angular-socialshare/dist/angular-socialshare.min.js"></script>
+  <script src="bower_components/slick-carousel/slick/slick.js"></script>
+  <script src="bower_components/angular-slick/dist/slick.js"></script>
+  <script src="bower_components/angular-tour/dist/angular-tour-tpls.min.js"></script>
+  <script src="bower_components/angular-bootstrap-toggle/dist/angular-bootstrap-toggle.min.js"></script>
+  <script src="bower_components/moment/moment.js"></script>
+  <script src="bower_components/angular-pageslide-directive/dist/angular-pageslide-directive.js"></script>
+  <!-- endbower -->
+  <!--<script src="socket.io-client/socket.io.js"></script>-->
+  <!-- endbuild -->
+
+  <script type="text/javascript" src="assets/js/toastr/toastr.min.js"></script>
+  <script type="text/javascript" src="assets/js/slick.min.js"></script>
+
+
+
+
+  <!-- build:js(.tmp) app/app.js -->
+  <script src="app/app.js"></script>
+  <!-- injector:js -->
+  <script src="app/admin/admin.module.js"></script>
+  <script src="components/auth/auth.module.js"></script>
+  <script src="components/util/util.module.js"></script>
+  <script src="app/main/main.js"></script>
+  <script src="app/admin/admin.controller.js"></script>
+  <script src="app/account/account.js"></script>
+  <script src="app/admin/admin.router.js"></script>
+  <script src="app/app.constant.js"></script>
+  <script src="app/destinations/destinations.controller.js"></script>
+  <script src="app/destinations/destinations.js"></script>
+  <script src="app/detailactivity/detailactivity.controller.js"></script>
+  <script src="app/detailactivity/detailactivity.js"></script>
+  <script src="app/directives/directives.js"></script>
+  <script src="app/directives/googleMap.js"></script>
+  <script src="app/itinerary/itinerary.controller.js"></script>
+  <script src="app/itinerary/itinerary.js"></script>
+  <script src="app/itinerarylist/itinerarylist.controller.js"></script>
+  <script src="app/itinerarylist/itinerarylist.js"></script>
+  <script src="app/itinerarymap/itinerarymap.controller.js"></script>
+  <script src="app/itinerarymap/itinerarymap.js"></script>
+  <script src="app/main/main.controller.js"></script>
+  <script src="app/account/login/login.controller.js"></script>
+  <script src="app/public-itinerary/public-itinerary.controller.js"></script>
+  <script src="app/public-itinerary/public-itinerary.js"></script>
+  <script src="app/services/blogFactory.js"></script>
+  <script src="app/services/metaservice.js"></script>
+  <script src="app/userprofile/useritineraries/useritineraries.controller.js"></script>
+  <script src="app/userprofile/useritineraries/useritineraries.js"></script>
+  <script src="app/account/settings/settings.controller.js"></script>
+  <script src="components/auth/auth.service.js"></script>
+  <script src="components/auth/interceptor.service.js"></script>
+  <script src="components/auth/router.decorator.js"></script>
+  <script src="components/auth/user.service.js"></script>
+  <script src="components/footer/footer.directive.js"></script>
+  <script src="components/modal/modal.service.js"></script>
+  <script src="components/mongoose-error/mongoose-error.directive.js"></script>
+  <script src="components/navbar/navbar.controller.js"></script>
+  <script src="components/navbar/navbar.directive.js"></script>
+  <script src="components/oauth-buttons/oauth-buttons.controller.js"></script>
+  <script src="components/oauth-buttons/oauth-buttons.directive.js"></script>
+  <script src="components/socket/socket.service.js"></script>
+  <script src="app/account/signup/signup.controller.js"></script>
+  <script src="components/util/util.service.js"></script>
+  <!-- endinjector -->
+  <!-- endbuild -->
+  <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyD7tIZM43YDoFVujQ5tR1FEX--Qb1FYOI0"></script>
+  <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+  <!--<script src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyA-iCNYt6ham4ygfAp6AAAEUDgJcEgFpvM"></script>-->
+
+</body>
+
+</html>
